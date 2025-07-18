@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>howosyyou OS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0d0d1f;
+      color: #f2f2f2;
+      overflow: hidden;
+    }
+    #preloader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #0d0d1f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: preloaderFade 2.5s forwards;
+    }
+    .preloader-text {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    @keyframes preloaderFade {
+      0% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.6; }
+    }
+    .taskbar {
+      height: 40px;
+      background: #1f1f30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+    .start {
+      background: #292945;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .start-menu {
+      position: absolute;
+      bottom: 45px;
+      left: 10px;
+      background: #1f1f30;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      display: none;
+      flex-direction: column;
+      width: 200px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      z-index: 150;
+    }
+    .start-menu a {
+      padding: 0.5rem 1rem;
+      color: #f2f2f2;
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .start-menu a:hover {
+      background: #292945;
+    }
+    .time {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    .desktop {
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(to bottom right, #161630, #0f0f20);
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 1.5rem;
+      position: relative;
+    }
+    .icon {
+      width: 100px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .icon img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 0.5rem;
+    }
+    .window {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      width: 400px;
+      background: #1f1f30;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+      overflow: hidden;
+      animation: fadeIn 0.3s ease-out;
+      transition: transform 0.2s ease, top 0.2s ease, left 0.2s ease;
+      z-index: 10;
+    }
+    .window.hide {
+      animation: fadeOut 0.2s ease-in forwards;
+    }
+    .window-header {
+      background: #292945;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: move;
+    }
+    .window-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .close, .minimize {
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .close { color: #ff6666; }
+    .minimize { color: #cccc66; }
+    .window-body {
+      padding: 1rem;
+      background: #1a1a2f;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.95); }
+    }
+    .grid-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+    .grid-links a {
+      background: linear-gradient(145deg, #292945, #1a1a2f);
+      padding: 1rem;
+      text-align: center;
+      border-radius: 16px;
+      text-decoration: none;
+      color: #f2f2f2;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .grid-links a:hover {
+      transform: scale(1.07);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+    }
+    .grid-links img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 0.5rem;
+      filter: drop-shadow(0 0 5px rgba(255,255,255,0.1));
+    }
+  </style>
+</head>
+<body>
+  <div id="preloader">
+    <div class="preloader-text">furrysobachka</div>
+  </div>
+
+  <div class="desktop" id="desktop">
+    <div class="icon" onclick="openWindow('Соцсети')">
+      <img src="https://img.icons8.com/fluency/48/share.png" alt="Links" />
+      <div>Соцсети</div>
+    </div>
+    <div class="icon" onclick="openWindow('Обо мне')">
+      <img src="https://img.icons8.com/fluency/48/information.png" alt="About" />
+      <div>Обо мне</div>
+    </div>
+  </div>
+
+  <div class="taskbar">
+    <div class="start">howOS</div>
+    <div class="time" id="time"></div>
+  </div>
+
+  <div class="start-menu" id="startMenu">
+    <a href="#" onclick="openWindow('Соцсети')">
+      <img src="https://img.icons8.com/fluency/24/share.png"/> Соцсети
+    </a>
+    <a href="#" onclick="openWindow('Обо мне')">
+      <img src="https://img.icons8.com/fluency/24/information.png"/> Обо мне
+    </a>
+  </div>
+
+  <script>
+    const timeEl = document.getElementById('time');
+    const desktop = document.getElementById('desktop');
+    const startMenu = document.getElementById('startMenu');
+
+    setInterval(() => {
+      const now = new Date();
+      timeEl.textContent = now.toLocaleTimeString();
+    }, 1000);
+
+    window.onload = () => {
+      setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) preloader.remove();
+      }, 2500);
+    };
+
+    document.querySelector('.start').addEventListener('click', () => {
+      startMenu.style.display = startMenu.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    function openWindow(title) {
+      const win = document.createElement('div');
+      win.className = 'window';
+      win.innerHTML = `
+        <div class="window-header">
+          <span>${title}</span>
+          <div class="window-controls">
+            <span class="minimize">–</span>
+            <span class="close">×</span>
+          </div>
+        </div>
+        <div class="window-body">
+          ${getWindowContent(title)}
+        </div>
+      `;
+      desktop.appendChild(win);
+
+      const closeBtn = win.querySelector('.close');
+      const minimizeBtn = win.querySelector('.minimize');
+      const body = win.querySelector('.window-body');
+
+      closeBtn.onclick = () => {
+        win.classList.add('hide');
+        setTimeout(() => win.remove(), 200);
+      };
+
+      minimizeBtn.onclick = () => {
+        body.style.display = body.style.display === 'none' ? 'block' : 'none';
+      };
+
+      const header = win.querySelector('.window-header');
+      let offsetX, offsetY, isDragging = false;
+      header.onmousedown = e => {
+        isDragging = true;
+        offsetX = e.clientX - win.offsetLeft;
+        offsetY = e.clientY - win.offsetTop;
+        document.onmousemove = e => {
+          if (!isDragging) return;
+          win.style.left = (e.clientX - offsetX) + 'px';
+          win.style.top = (e.clientY - offsetY) + 'px';
+        };
+        document.onmouseup = () => {
+          isDragging = false;
+          document.onmousemove = null;
+          document.onmouseup = null;
+        };
+      };
+    }
+
+    function getWindowContent(title) {
+      if (title === 'Соцсети') {
+        return `
+          <div class="grid-links">
+            <a href="https://www.grfruit.ru" target="_blank">
+              <img src="https://img.icons8.com/color/48/domain.png" />GRFruit
+            </a>
+            <a href="https://steamcommunity.com/id/howosyyou" target="_blank">
+              <img src="https://img.icons8.com/color/48/steam.png" />Steam
+            </a>
+            <a href="https://www.tiktok.com/@hworast" target="_blank">
+              <img src="https://img.icons8.com/color/48/tiktok--v1.png" />TikTok
+            </a>
+            <a href="https://www.twitch.tv/hws01_" target="_blank">
+              <img src="https://img.icons8.com/color/48/twitch--v1.png" />Twitch
+            </a>
+            <a href="https://x.com/howosy1" target="_blank">
+              <img src="https://img.icons8.com/color/48/twitterx.png" />X
+            </a>
+            <a href="https://github.com/howos1" target="_blank">
+              <img src="https://img.icons8.com/ios-glyphs/48/github.png" />GitHub
+            </a>
+            <a href="https://open.spotify.com/artist/0XrcwdzxgVeD5KX7c6sYhV?si=TrKvvhVzQwKgBUFZ7xsSIg" target="_blank">
+              <img src="https://img.icons8.com/color/48/spotify--v1.png" />Spotify
+            </a>
+          </div>
+        `;
+      } else if (title === 'Обо мне') {
+        return `<p>Я howosyyou — разработчик, стример и артист. Добро пожаловать в мою OS-интерфейсную среду 😎</p>`;
+      } else {
+        return `<p>Пустое окно</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
