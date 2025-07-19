@@ -1,2 +1,89 @@
-<meta name="color-scheme" content="light dark">
-<h2>indev</h2>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About furry uwu nyawka, with nickname howosy">
+  <link type="image/png" sizes="32x32" rel="icon" href="https://purplify.grfruit.ru/img/favicon-32x32.png">
+  <link type="image/png" sizes="64x64" rel="icon" href="https://purplify.grfruit.ru/img/favicon-64x64.png">
+  <link type="image/png" sizes="128x128" rel="icon" href="https://purplify.grfruit.ru/img/favicon-128x128.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="/dist/main.js"></script>
+  <title>hworast loves furries</title>
+</head>
+<body>
+  <div class="container">
+    <h1>howosy</h1>
+    <div class="aka"><strong>! hws_ \ hworast \ kotikhwsuwu</strong></div>
+    <p>привет это хвс, я есть в спотифай, а ты?</p>
+    <div class="links">
+      <div class="link-item">
+        <a href="https://www.grfruit.ru" target="_blank"><i class="fa-brands fa-internet-explorer"></i></i>GrapeFruit</a>
+        <img src="img/rknline.png" alt="Линия" class="line-image rknline-image">
+      </div>
+      <div class="link-item">
+        <a href="https://steamcommunity.com/id/howosyyou" target="_blank"><i class="fa-brands fa-steam"></i>Steam</a>
+      </div>
+      <div class="link-item">
+        <a href="https://www.tiktok.com/@hworast" target="_blank"><i class="fa-brands fa-tiktok"></i>TikTok</a>
+      </div>
+      <div class="link-item">
+        <a href="https://www.twitch.tv/hws01_" target="_blank"><i class="fa-brands fa-twitch"></i>Twitch</a>
+      </div>
+      <div class="link-item">
+        <a href="https://x.com/howosy1" target="_blank"><i class="fa-brands fa-x-twitter"></i>X (Twitter)</a>
+        <img src="img/artline.png" alt="Линия" class="line-image artline-image">
+      </div>
+      <div class="link-item">
+        <a href="https://github.com/howos1" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
+      </div>
+      <div class="link-item">
+        <a href="https://open.spotify.com/artist/0XrcwdzxgVeD5KX7c6sYhV?si=TrKvvhVzQwKgBUFZ7xsSIg" target="_blank"><i class="fa-brands fa-spotify"></i>Spotify</a>
+        <img src="img/musicline.png" alt="Линия" class="line-image musicline-image">
+      </div>
+      <div class="link-item">
+        <a href="https://discord.gg/suMygMpsWH" target="_blank"><i class="fa-brands fa-discord"></i>Discord</a>
+      </div>
+    </div>
+  <div class="about-me" id="aboutMe">
+    <img src="img/avatar.png" alt="Аватар" class="avatar-img">
+    <div class="bio-text">
+      <h2>Немножка обо мне</h2>
+      <p>Создатель UeRKN, Purplify, Косточка, пишу музызыку, рисую фурре и всякое такое</p>
+    </div>
+  </div>
+
+  <div class="about-me-two" id="aboutMeTwo">
+    <div class="bio-text">
+      <p>Мои Друзья</p>
+      <a href="https://somedott.space" class="pl-2 pr-2"><img src="https://somedott.space/button.png"></a>
+      <a href="https://tasory.is-a.dev" class="pl-2 pr-2"><img src="https://tasory.is-a.dev/src/buttons/mybutton.jpg"></a>
+    </div>
+  </div>
+
+  </div>
+    <footer>
+      <p>2020-2025 GrapeFruit© Все права зафырканы.</p>
+    </footer>
+  </div>
+  <script>
+    const aboutMe = document.getElementById('aboutMe');
+    const aboutMeTwo = document.getElementById('aboutMeTwo');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          aboutMe.classList.add('show');
+          aboutMeTwo.classList.add('show');
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(aboutMe);
+
+    var cursor = new osuCursor();
+  </script>
+</body>
+</html>
