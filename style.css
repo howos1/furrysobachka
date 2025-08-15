@@ -4,22 +4,28 @@
   padding: 0;
 }
 
-
 body {
   font-family: "Comfortaa", sans-serif;
   background: linear-gradient(135deg, #2e2e2e, #141414);
   color: #fff;
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 100vh;
   padding: 2rem;
+  position: relative;
+}
+
+html, body {
+  overflow: hidden;
+  height: 100%;
 }
 
 .container {
   max-width: 800px;
   width: 100%;
   text-align: center;
+  margin: 0 auto;
+  padding-bottom: 130px;
 }
 
 h1 {
@@ -102,13 +108,6 @@ p {
   margin-left: 135px;
 }
 
-footer {
-  margin-top: auto;
-  font-size: 0.9rem;
-  color: #777;
-  margin-top: 5rem;
-}
-
 .avatar-img {
   width: 120px;
   height: 120px;
@@ -176,12 +175,16 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 2rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 24px #141414;
+  padding: 1rem 2rem;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -4px 24px #141414;
   width: 800px;
-  margin: 0 auto;
-  margin-top: -50px;
+  height: 110px;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
 }
 
 .pl-2 {
@@ -190,4 +193,118 @@ footer {
 
 .pr-2 {
   padding-right: 0.5rem;
+}
+
+.language-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.language-switcher button {
+  background: #141414;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: "Comfortaa", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.language-switcher button:hover {
+  background: #535353;
+  transform: scale(1.05);
+}
+
+/* ТЕЛЕФОНЫ И ПЛАНШЕТЫ */
+@media (max-width: 900px) {
+  .about-me, .myfriends {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+    overflow: auto;
+  }
+
+  html, body {
+    overflow: auto;
+  }
+
+  .container {
+    padding: 0 0 20px 0;
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  .aka {
+    font-size: 0.9rem;
+  }
+  
+  p {
+    font-size: 1rem;
+  }
+  
+  .links {
+    gap: 0.8rem;
+  }
+  
+  .links a {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .line-image {
+    display: none !important;
+  }
+  
+  .about-me {
+    padding: 1.5rem;
+    margin-top: 2rem;
+    width: 100%;
+  }
+  
+  .myfriends {
+    position: relative;
+    transform: none;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    margin: 1rem 0;
+    box-shadow: 0 4px 24px #141414;
+    left: auto;
+    bottom: auto;
+    padding: 1rem;
+  }
+  
+  .avatar-img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .like-content p {
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .links a {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .about-me, .myfriends {
+    padding: 1rem;
+  }
 }
