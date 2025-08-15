@@ -13,6 +13,10 @@
   <title>About Furry Nyawka</title>
 </head>
 <body>
+  <div class="language-switcher">
+    <button id="langSwitch">EN</button>
+  </div>
+  
   <div class="container">
     <h1>howosy</h1>
     <div class="aka"><strong>! hws_ \ hworast \ kotikhwsuwu</strong></div>
@@ -20,7 +24,7 @@
     <div class="links">
       <div class="link-item">
         <a href="https://www.grfruit.ru" target="_blank"><i class="fa-brands fa-internet-explorer"></i>GrapeFruit</a>
-        <img src="img/rknline.png" alt="Линия" class="line-image rknline-image">
+        <img src="img/rknline.png" class="line-image rknline-image" id="rknLine">
       </div>
       <div class="link-item">
         <a href="https://steamcommunity.com/id/howosyyou" target="_blank"><i class="fa-brands fa-steam"></i>Steam</a>
@@ -33,14 +37,14 @@
       </div>
       <div class="link-item">
         <a href="https://x.com/howosy1" target="_blank"><i class="fa-brands fa-x-twitter"></i>X (Twitter)</a>
-        <img src="img/artline.png" alt="Линия" class="line-image artline-image">
+        <img src="img/artline.png" class="line-image artline-image" id="artLine">
       </div>
       <div class="link-item">
         <a href="https://github.com/howos1" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
       </div>
       <div class="link-item">
         <a href="https://open.spotify.com/artist/0XrcwdzxgVeD5KX7c6sYhV?si=TrKvvhVzQwKgBUFZ7xsSIg" target="_blank"><i class="fa-brands fa-spotify"></i>Spotify</a>
-        <img src="img/musicline.png" alt="Линия" class="line-image musicline-image">
+        <img src="img/musicline.png" class="line-image musicline-image" id="musicLine">
       </div>
       <div class="link-item">
         <a href="https://discord.gg/suMygMpsWH" target="_blank"><i class="fa-brands fa-discord"></i>Discord</a>
@@ -48,39 +52,84 @@
     </div>
 
     <div class="about-me" id="aboutMe">
-      <img src="img/avatar.png" alt="Аватар" class="avatar-img">
+      <img src="https://cdn.grfruit.ru/img/avatar.png" class="avatar-img">
       <div class="bio-text">
-        <h2>Немножка обо мне</h2>
-        <p>Создатель UeRKN, Purplify, Косточка, пишу музяку, рисую фурре и всякое такое</p>
+        <h2 id="aboutTitle">Немножка обо мне</h2>
+        <p id="aboutText">Создатель UeRKN, Purplify, Косточка, пишу музяку, рисую фурре и всякое такое</p>
         
         <div class="like-section">
-          <h2>Шарю за :3</h2>
+          <h2 id="likesTitle">Шарю за :3</h2>
           <div class="like-content">
-            <p>· шуаке канон</p>
-            <p>· фуряшке</p>
-            <p>· интерпопер</p>
-            <p>· MythOS</p>
-            <p>· Oculus (фу какаха)</p>
+            <p id="like1">· шуаке канон</p>
+            <p id="like2">· фуряшке</p>
+            <p id="like3">· интерпопер</p>
+            <p id="like4">· MythOS</p>
+            <p id="like5">· Oculus (фу какаха)</p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <footer>
-      <div class="myfriends" id="myfriends">
-        <div class="bio-text">
-          <a href="https://somedott.space" class="pl-2 pr-2"><img src="https://somedott.space/button.png"></a>
-          <a href="https://tasory.is-a.dev" class="pl-2 pr-2"><img src="https://tasory.is-a.dev/src/buttons/mybutton.jpg"></a>
-          <img src="https://88by31.neocities.org/music/funny.gif"> <img src="https://88by31.neocities.org/web/noteoth2.gif">
-          <img src="https://tasory.is-a.dev/src/buttons/misterp.png">
-          <p>2020-2025 GrapeFruit© Все права зафырканы.</p>
-        </div>
-      </div>
-    </footer>
+  <div class="myfriends" id="myfriends">
+    <div class="bio-text">
+      <a href="https://somedott.space" class="pl-2 pr-2"><img src="https://somedott.space/button.png"></a>
+      <a href="https://tasory.is-a.dev" class="pl-2 pr-2"><img src="https://tasory.is-a.dev/src/buttons/mybutton.jpg"></a>
+      <img src="https://88by31.neocities.org/music/funny.gif"> <img src="https://88by31.neocities.org/web/noteoth2.gif">
+      <img src="https://tasory.is-a.dev/src/buttons/misterp.png">
+      <p id="footerText">2020-2025 GrapeFruit© Все права зафырканы.</p>
+    </div>
   </div>
 
   <script>
-    var cursor = new osuCursor();
+    const langSwitch = document.getElementById('langSwitch');
+    let currentLang = 'ru';
+    
+    langSwitch.addEventListener('click', function() {
+      const rknLine = document.getElementById('rknLine');
+      const artLine = document.getElementById('artLine');
+      const musicLine = document.getElementById('musicLine');
+      
+      if (currentLang === 'ru') {
+        // инглиш
+        document.querySelector('p').textContent = 'hi this is hws, i am on spotify, and you?';
+        document.getElementById('aboutTitle').textContent = 'A little about me';
+        document.getElementById('aboutText').textContent = 'Creator of UeRKN, Purplify, SourPith, I write music, draw furries and stuff';
+        document.getElementById('likesTitle').textContent = 'I know about :3';
+        document.getElementById('like1').textContent = '· ShuAke';
+        document.getElementById('like2').textContent = '· Fluffys';
+        document.getElementById('like3').textContent = '· Interloper';
+        document.getElementById('like4').textContent = '· MythOS';
+        document.getElementById('like5').textContent = '· Oculus (ew cringe)';
+        document.getElementById('footerText').textContent = '2020-2025 GrapeFruit© All rights furred.';
+        
+        if (rknLine) rknLine.src = 'img/eng/rknline.png';
+        if (artLine) artLine.src = 'img/eng/artline.png';
+        if (musicLine) musicLine.src = 'img/eng/musicline.png';
+        
+        currentLang = 'en';
+        langSwitch.textContent = 'RU';
+      } else {
+        // рашин
+        document.querySelector('p').textContent = 'привет это хвс, я есть в спотифай, а ты?';
+        document.getElementById('aboutTitle').textContent = 'Немножка обо мне';
+        document.getElementById('aboutText').textContent = 'Создатель UeRKN, Purplify, Косточка, пишу музяку, рисую фурре и всякое такое';
+        document.getElementById('likesTitle').textContent = 'Шарю за :3';
+        document.getElementById('like1').textContent = '· шуаке канон';
+        document.getElementById('like2').textContent = '· фуряшке';
+        document.getElementById('like3').textContent = '· интерпопер';
+        document.getElementById('like4').textContent = '· MythOS';
+        document.getElementById('like5').textContent = '· Oculus (фу какаха)';
+        document.getElementById('footerText').textContent = '2020-2025 GrapeFruit© Все права зафырканы.';
+        
+        if (rknLine) rknLine.src = 'img/rknline.png';
+        if (artLine) artLine.src = 'img/artline.png';
+        if (musicLine) musicLine.src = 'img/musicline.png';
+        
+        currentLang = 'ru';
+        langSwitch.textContent = 'EN';
+      }
+    });
   </script>
 </body>
 </html>
