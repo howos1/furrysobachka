@@ -300,3 +300,26 @@ p {
     padding: 1rem;
   }
 }
+
+.photos-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #141414;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.photos-button:hover {
+  background: #535353;
+  transform: scale(1.05);
+}
