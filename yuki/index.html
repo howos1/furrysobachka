@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мои рисунки</title>
+  <title>YukiMeow Arts</title>
   <link rel="stylesheet" href="style-gallery.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <div class="container">
-    <h1>Мои рисунки</h1>
+    <h1>YukiMeow Arts :3</h1>
     <div class="gallery" id="gallery"></div>
   </div>
 
@@ -38,40 +38,50 @@
         const closeButton = document.getElementById("closeButton");
 
         data.forEach((item, index) => {
-          const div = document.createElement("div");
-          div.className = "gallery-item";
+          setTimeout(() => {
+            const div = document.createElement("div");
+            div.className = "gallery-item";
+            div.style.animationDelay = `${index * 0.1}s`;
 
-          const wrapper = document.createElement("div");
-          wrapper.className = "image-wrapper";
+            const wrapper = document.createElement("div");
+            wrapper.className = "image-wrapper";
 
-          const img = document.createElement("img");
-          img.src = item.url;
-          img.alt = `Рисунок от ${item.author}`;
-          
-          if (item.blur) {
-            img.classList.add("blur-on-hover");
-          }
+            const img = document.createElement("img");
+            img.src = item.url;
+            img.alt = `Рисунок от ${item.author}`;
+            
+            if (item.blur) {
+              img.classList.add("blur-on-hover");
+            }
 
-          img.addEventListener("click", () => {
-            fullscreenImage.src = item.url;
-            fullscreenAuthor.textContent = `Автор: ${item.author}`;
-            fullscreenOverlay.classList.add("active");
-            document.body.style.overflow = 'hidden';
-          });
+            img.addEventListener("click", () => {
+              openFullscreen(item.url, item.author);
+            });
 
-          const overlay = document.createElement("div");
-          overlay.className = "author-overlay";
-          overlay.textContent = `Автор: ${item.author}`;
+            const overlay = document.createElement("div");
+            overlay.className = "author-overlay";
+            overlay.textContent = `Автор: ${item.author}`;
 
-          wrapper.appendChild(img);
-          wrapper.appendChild(overlay);
-          div.appendChild(wrapper);
-          gallery.appendChild(div);
+            wrapper.appendChild(img);
+            wrapper.appendChild(overlay);
+            div.appendChild(wrapper);
+            gallery.appendChild(div);
+          }, index * 100);
         });
 
+        function openFullscreen(imageUrl, author) {
+          fullscreenImage.src = imageUrl;
+          fullscreenAuthor.textContent = `Автор: ${author}`;
+          fullscreenOverlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+
         function closeFullscreen() {
-          fullscreenOverlay.classList.remove("active");
-          document.body.style.overflow = 'auto';
+          fullscreenOverlay.classList.add('closing');
+          setTimeout(() => {
+            fullscreenOverlay.classList.remove('active', 'closing');
+            document.body.style.overflow = 'auto';
+          }, 400);
         }
 
         closeButton.addEventListener("click", closeFullscreen);
