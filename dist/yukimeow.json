@@ -1,22 +1,82 @@
 [
   {
     "author": "howosy",
-    "url": "https://cdn.grfruit.ru/img/avatar.png",
+    "url": "https://pbs.twimg.com/media/G1J4NqPXoAAYqKZ?format=jpg&name=large",
     "blur": false
   },
   {
     "author": "yuki",
-    "url": "https://cdn.grfruit.ru/img/max.png",
+    "url": "https://pbs.twimg.com/media/GvWBv4DWoAAr0z5?format=jpg&name=large",
     "blur": true
   },
   {
     "author": "meow",
-    "url": "https://cdn.grfruit.ru/img/avatar.png",
+    "url": "https://pbs.twimg.com/media/GitBWbDXsAA_mPC?format=png&name=900x900",
     "blur": false
   },
   {
     "author": "tasory",
-    "url": "https://cdn.grfruit.ru/img/avatar.png",
+    "url": "https://pbs.twimg.com/media/GiqB_cQWIAANNf-?format=png&name=900x900",
+    "blur": true
+  },
+  {
+    "author": "howosy",
+    "url": "https://pbs.twimg.com/media/G1J4NqPXoAAYqKZ?format=jpg&name=large",
+    "blur": false
+  },
+  {
+    "author": "yuki",
+    "url": "https://pbs.twimg.com/media/GvWBv4DWoAAr0z5?format=jpg&name=large",
+    "blur": true
+  },
+  {
+    "author": "meow",
+    "url": "https://pbs.twimg.com/media/GitBWbDXsAA_mPC?format=png&name=900x900",
+    "blur": false
+  },
+  {
+    "author": "tasory",
+    "url": "https://pbs.twimg.com/media/GiqB_cQWIAANNf-?format=png&name=900x900",
+    "blur": true
+  },
+  {
+    "author": "howosy",
+    "url": "https://pbs.twimg.com/media/G1J4NqPXoAAYqKZ?format=jpg&name=large",
+    "blur": false
+  },
+  {
+    "author": "yuki",
+    "url": "https://pbs.twimg.com/media/GvWBv4DWoAAr0z5?format=jpg&name=large",
+    "blur": true
+  },
+  {
+    "author": "meow",
+    "url": "https://pbs.twimg.com/media/GitBWbDXsAA_mPC?format=png&name=900x900",
+    "blur": false
+  },
+  {
+    "author": "tasory",
+    "url": "https://pbs.twimg.com/media/GiqB_cQWIAANNf-?format=png&name=900x900",
+    "blur": true
+  },
+  {
+    "author": "howosy",
+    "url": "https://pbs.twimg.com/media/G1J4NqPXoAAYqKZ?format=jpg&name=large",
+    "blur": false
+  },
+  {
+    "author": "yuki",
+    "url": "https://pbs.twimg.com/media/GvWBv4DWoAAr0z5?format=jpg&name=large",
+    "blur": true
+  },
+  {
+    "author": "meow",
+    "url": "https://pbs.twimg.com/media/GitBWbDXsAA_mPC?format=png&name=900x900",
+    "blur": false
+  },
+  {
+    "author": "tasory",
+    "url": "https://pbs.twimg.com/media/GiqB_cQWIAANNf-?format=png&name=900x900",
     "blur": true
   }
 ]
