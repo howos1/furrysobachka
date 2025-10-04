@@ -1,6 +1,11 @@
 [
   {
     "author": "agro_kvas",
+    "url": "https://meow.furrysobachka.ru/img/yukimeow/kvass3.jpg",
+    "blur": true
+  },
+  {
+    "author": "agro_kvas",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/kvass2.jpg",
     "blur": false
   },
@@ -45,4 +50,5 @@
     "blur": false
   }
 ]
+
 
