@@ -95,7 +95,6 @@
       const musicLine = document.getElementById('musicLine');
       
       if (currentLang === 'ru') {
-        // инглиш
         document.querySelector('p').textContent = 'hi this is hws, i am on spotify, and you?';
         document.getElementById('aboutTitle').textContent = 'A little about me';
         document.getElementById('aboutText').textContent = 'Creator of UeRKN, Purplify, SourPith, I write music, draw furries and stuff';
@@ -114,7 +113,6 @@
         currentLang = 'en';
         langSwitch.textContent = 'RU';
       } else {
-        // рашин
         document.querySelector('p').textContent = 'привет это хвс, я есть в спотифай, а ты?';
         document.getElementById('aboutTitle').textContent = 'Немножка обо мне';
         document.getElementById('aboutText').textContent = 'Создатель UeRKN, Purplify, Косточка, пишу музяку, рисую фурре и всякое такое';
@@ -134,6 +132,24 @@
         langSwitch.textContent = 'EN';
       }
     });
+
+    const myfriends = document.getElementById("myfriends");
+
+    function checkScroll() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+
+      if (scrollY + windowHeight >= docHeight - 10) {
+        myfriends.classList.add("visible");
+      } else {
+        myfriends.classList.remove("visible");
+      }
+    }
+
+    window.addEventListener("scroll", checkScroll);
+    window.addEventListener("resize", checkScroll);
+    window.addEventListener("load", checkScroll);
   </script>
 </body>
 </html>
