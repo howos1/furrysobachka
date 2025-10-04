@@ -16,8 +16,9 @@ body {
 }
 
 html, body {
-  overflow: hidden;
-  height: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto; 
 }
 
 .container {
@@ -25,7 +26,7 @@ html, body {
   width: 100%;
   text-align: center;
   margin: 0 auto;
-  padding-bottom: 130px;
+  padding-bottom: 2rem;
 }
 
 h1 {
@@ -176,15 +177,19 @@ p {
   flex-direction: column;
   align-items: center;
   padding: 1rem 2rem;
-  border-radius: 20px 20px 0 0;
+  border-radius: 20px;
   box-shadow: 0 -4px 24px #141414;
   width: 800px;
-  height: 110px;
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+  min-height: 110px;
+  margin: 2rem auto 0 auto;
+  margin-top: 16px !important;
+  opacity: 0.2;
+  visibility: visible;
+  transition: opacity 0.6s ease;
+}
+
+.myfriends.visible {
+  opacity: 1;
 }
 
 .language-switcher {
@@ -210,7 +215,6 @@ p {
   transform: scale(1.05);
 }
 
-/* ТЕЛЕФОНЫ И ПЛАНШЕТЫ */
 @media (max-width: 900px) {
   .about-me, .myfriends {
     width: 90%;
@@ -263,15 +267,12 @@ p {
   }
   
   .myfriends {
-    position: relative;
-    transform: none;
     width: 100%;
     height: auto;
     border-radius: 20px;
     margin: 1rem 0;
+    margin-top: 16px; 
     box-shadow: 0 4px 24px #141414;
-    left: auto;
-    bottom: auto;
     padding: 1rem;
   }
   
