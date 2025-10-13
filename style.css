@@ -198,7 +198,7 @@ p {
 }
 
 .language-switcher button {
-  background: #141414;
+  background: #2F2F4D;
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -209,7 +209,7 @@ p {
 }
 
 .language-switcher button:hover {
-  background: #535353;
+  background: #3A3A5E;
   transform: scale(1.05);
 }
 
@@ -304,7 +304,7 @@ p {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #141414;
+  background: #2F2F4D;
   color: #fff;
   padding: 12px 18px;
   border-radius: 12px;
@@ -319,6 +319,6 @@ p {
 }
 
 .photos-button:hover {
-  background: #535353;
+  background: #3A3A5E;
   transform: scale(1.05);
 }
