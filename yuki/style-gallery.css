@@ -6,7 +6,7 @@
 
 body {
   font-family: "Comfortaa", sans-serif;
-  background: linear-gradient(135deg, #2e2e2e, #141414);
+  background: linear-gradient(135deg, #2F2F4D, #3A3A5E);
   color: #fff;
   min-height: 100vh;
   padding: 2rem;
@@ -106,7 +106,7 @@ h1 {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #141414;
+  background: #2F2F4D;
   color: #fff;
   padding: 12px 18px;
   border-radius: 12px;
@@ -121,7 +121,7 @@ h1 {
 }
 
 .back-button:hover {
-  background: #535353;
+  background: #3A3A5E;
   transform: scale(1.05);
 }
 
@@ -341,3 +341,4 @@ h1 {
     height: 220px;
   }
 }
+
