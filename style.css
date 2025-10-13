@@ -6,7 +6,7 @@
 
 body {
   font-family: "Comfortaa", sans-serif;
-  background: linear-gradient(135deg, #2e2e2e, #141414);
+  background: linear-gradient(135deg, #2F2F4D, #3A3A5E);
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -68,7 +68,6 @@ p {
 
 .links a {
   text-decoration: none;
-  background: #141414;
   color: #fff;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
@@ -80,7 +79,7 @@ p {
 }
 
 .links a:hover {
-  background: #535353;
+  background: #3A3A5E;
   transform: scale(1.05);
 }
 
@@ -115,7 +114,6 @@ p {
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 1rem;
-  border: 3px solid #141414;
 }
 
 .bio-text {
@@ -160,15 +158,15 @@ p {
 .like-content p {
   margin: 0;
   padding: 0.5rem 1.2rem;
-  background: #141414;
+  background: #2F2F4D;
   border-radius: 12px;
-  border: 1px solid #141414;
+  border: 1px solid #3A3A5E;
   transition: all 0.3s ease;
   font-size: 1rem;
 }
 
 .like-content p:hover {
-  background: #202020;
+  background: #3A3A5E;
   transform: translateY(-2px);
 }
 
@@ -178,7 +176,7 @@ p {
   align-items: center;
   padding: 1rem 2rem;
   border-radius: 20px;
-  box-shadow: 0 -4px 24px #141414;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
   width: 800px;
   min-height: 110px;
   margin: 2rem auto 0 auto;
