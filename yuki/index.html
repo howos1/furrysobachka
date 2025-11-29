@@ -16,6 +16,7 @@
   <div class="container">
     <h1>YukiMeow Arts :3</h1>
     <div class="gallery" id="gallery"></div>
+    <div class="loading" id="loading">Загрузка...</div>
   </div>
 
   <div class="fullscreen-overlay" id="fullscreenOverlay">
@@ -23,7 +24,10 @@
       <i class="fas fa-times"></i>
     </button>
     <img class="fullscreen-image" id="fullscreenImage" src="" alt="">
-    <div class="fullscreen-author" id="fullscreenAuthor"></div>
+    <div class="fullscreen-author-container" id="fullscreenAuthorContainer">
+      <div class="fullscreen-author" id="fullscreenAuthor"></div>
+      <div class="fullscreen-femboy" id="fullscreenFemboy">(Femboy Version)</div>
+    </div>
   </div>
 
   <a href="https://meow.furrysobachka.ru" class="back-button">
@@ -31,87 +35,142 @@
   </a>
 
   <script>
+    let allImages = [];
+    let loadedCount = 0;
+    const batchSize = 12;
+    let isLoading = false;
+
     async function loadGallery() {
       try {
         const response = await fetch("https://meow.furrysobachka.ru/dist/yukimeow.json");
-        const data = await response.json();
-
-        const gallery = document.getElementById("gallery");
-        const fullscreenOverlay = document.getElementById("fullscreenOverlay");
-        const fullscreenImage = document.getElementById("fullscreenImage");
-        const fullscreenAuthor = document.getElementById("fullscreenAuthor");
-        const closeButton = document.getElementById("closeButton");
-
-        data.forEach((item, index) => {
-          setTimeout(() => {
-            const div = document.createElement("div");
-            div.className = "gallery-item";
-            div.style.animationDelay = `${index * 0.1}s`;
-
-            const wrapper = document.createElement("div");
-            wrapper.className = "image-wrapper";
-
-            const img = document.createElement("img");
-            img.src = item.url;
-            img.alt = `Рисунок от ${item.author}`;
-            
-            if (item.blur) {
-              img.classList.add("blur-on-hover");
-            }
-
-            img.addEventListener("click", () => {
-              openFullscreen(item.url, item.author);
-            });
-
-            const overlay = document.createElement("div");
-            overlay.className = "author-overlay";
-            overlay.textContent = `Автор: ${item.author}`;
-
-            wrapper.appendChild(img);
-            wrapper.appendChild(overlay);
-            div.appendChild(wrapper);
-            gallery.appendChild(div);
-          }, index * 100);
-        });
-
-        function openFullscreen(imageUrl, author) {
-          fullscreenImage.src = imageUrl;
-          fullscreenAuthor.textContent = `Автор: ${author}`;
-          fullscreenOverlay.classList.add('active');
-          document.body.style.overflow = 'hidden';
-        }
-
-        function closeFullscreen() {
-          fullscreenOverlay.classList.add('closing');
-          setTimeout(() => {
-            fullscreenOverlay.classList.remove('active', 'closing');
-            document.body.style.overflow = 'auto';
-          }, 400);
-        }
-
-        closeButton.addEventListener("click", closeFullscreen);
-        fullscreenOverlay.addEventListener("click", (e) => {
-          if (e.target === fullscreenOverlay) {
-            closeFullscreen();
-          }
-        });
-
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && fullscreenOverlay.classList.contains('active')) {
-            closeFullscreen();
-          }
-        });
-
+        allImages = await response.json();
+        
+        loadNextBatch();
+        
+        window.addEventListener('scroll', handleScroll);
+        
       } catch (err) {
         console.error("Ошибка загрузки галереи:", err);
         document.getElementById("gallery").innerHTML = "<p>Не удалось загрузить рисунки :(</p>";
+        document.getElementById("loading").style.display = 'none';
       }
     }
+
+    function handleScroll() {
+      if (isLoading) return;
+      
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      if (scrollTop + windowHeight >= documentHeight - windowHeight * 0.2) {
+        loadNextBatch();
+      }
+    }
+
+    function loadNextBatch() {
+      if (loadedCount >= allImages.length) {
+        document.getElementById("loading").style.display = 'none';
+        window.removeEventListener('scroll', handleScroll);
+        return;
+      }
+
+      isLoading = true;
+      const gallery = document.getElementById("gallery");
+      const loadingElement = document.getElementById("loading");
+      
+      const nextBatch = allImages.slice(loadedCount, loadedCount + batchSize);
+      
+      nextBatch.forEach((item, index) => {
+        setTimeout(() => {
+          const div = document.createElement("div");
+          div.className = "gallery-item";
+          div.style.animationDelay = `${index * 0.1}s`;
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "image-wrapper";
+
+          const img = document.createElement("img");
+          img.src = item.url;
+          img.alt = `Рисунок от ${item.author}`;
+          img.loading = "lazy";
+          
+          if (item.blur) {
+            img.classList.add("blur-on-hover");
+          }
+
+          img.addEventListener("click", () => {
+            openFullscreen(item.url, item.author, item.femboy);
+          });
+
+          const overlay = document.createElement("div");
+          overlay.className = "author-overlay";
+          overlay.textContent = `Автор: ${item.author}`;
+
+          wrapper.appendChild(img);
+          wrapper.appendChild(overlay);
+          div.appendChild(wrapper);
+          gallery.appendChild(div);
+        }, index * 50);
+      });
+
+      loadedCount += nextBatch.length;
+      
+      if (loadedCount < allImages.length) {
+        loadingElement.textContent = `Загружено ${loadedCount} из ${allImages.length} рисунков...`;
+      } else {
+        loadingElement.textContent = `Все рисунки загружены! (${allImages.length})`;
+        setTimeout(() => {
+          loadingElement.style.display = 'none';
+        }, 2000);
+      }
+      
+      isLoading = false;
+    }
+
+    const fullscreenOverlay = document.getElementById("fullscreenOverlay");
+    const fullscreenImage = document.getElementById("fullscreenImage");
+    const fullscreenAuthor = document.getElementById("fullscreenAuthor");
+    const fullscreenFemboy = document.getElementById("fullscreenFemboy");
+    const fullscreenAuthorContainer = document.getElementById("fullscreenAuthorContainer");
+    const closeButton = document.getElementById("closeButton");
+
+    function openFullscreen(imageUrl, author, isFemboy) {
+      fullscreenImage.src = imageUrl;
+      fullscreenAuthor.textContent = `Автор: ${author}`;
+      
+      if (isFemboy) {
+        fullscreenFemboy.style.display = 'block';
+      } else {
+        fullscreenFemboy.style.display = 'none';
+      }
+      
+      fullscreenOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFullscreen() {
+      fullscreenOverlay.classList.add('closing');
+      setTimeout(() => {
+        fullscreenOverlay.classList.remove('active', 'closing');
+        document.body.style.overflow = 'auto';
+      }, 400);
+    }
+
+    closeButton.addEventListener("click", closeFullscreen);
+    fullscreenOverlay.addEventListener("click", (e) => {
+      if (e.target === fullscreenOverlay) {
+        closeFullscreen();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && fullscreenOverlay.classList.contains('active')) {
+        closeFullscreen();
+      }
+    });
 
     loadGallery();
   </script>
 </body>
 </html>
-
-
-
