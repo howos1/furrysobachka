@@ -38,6 +38,16 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .image-wrapper {
@@ -173,11 +183,30 @@ h1 {
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.fullscreen-author {
+.fullscreen-author-container {
   position: absolute;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transition: all 0.5s ease 0.2s;
+}
+
+.fullscreen-overlay.active .fullscreen-author-container {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.fullscreen-overlay.closing .fullscreen-author-container {
+  transform: translateX(-50%) translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.fullscreen-author {
   background: rgba(20, 20, 20, 0.9);
   color: white;
   padding: 12px 24px;
@@ -185,15 +214,10 @@ h1 {
   font-size: 1.1rem;
   text-align: center;
   border: 1px solid #333;
-  opacity: 0;
-  transition: all 0.5s ease 0.2s;
+  white-space: nowrap;
 }
 
 .fullscreen-femboy {
-  position: absolute;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
   background: rgba(255, 105, 180, 0.9);
   color: white;
   padding: 8px 16px;
@@ -201,26 +225,8 @@ h1 {
   font-size: 1rem;
   text-align: center;
   border: 1px solid #ff69b4;
-  opacity: 0;
-  transition: all 0.5s ease 0.3s;
   font-weight: bold;
-}
-
-.fullscreen-overlay.active .fullscreen-author {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-.fullscreen-overlay.active .fullscreen-femboy {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-.fullscreen-overlay.closing .fullscreen-author,
-.fullscreen-overlay.closing .fullscreen-femboy {
-  transform: translateX(-50%) translateY(20px);
-  opacity: 0;
-  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .close-button {
@@ -259,6 +265,13 @@ h1 {
 .close-button:hover {
   background: #535353;
   transform: scale(1.1);
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #ccc;
 }
 
 @keyframes overlayFadeIn {
@@ -315,14 +328,18 @@ h1 {
     max-height: 80%;
   }
   
-  .fullscreen-author {
+  .fullscreen-author-container {
     bottom: 20px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .fullscreen-author {
     font-size: 1rem;
     padding: 10px 20px;
   }
   
   .fullscreen-femboy {
-    bottom: 70px;
     font-size: 0.9rem;
     padding: 6px 12px;
   }
@@ -365,7 +382,6 @@ h1 {
   }
   
   .fullscreen-femboy {
-    bottom: 65px;
     font-size: 0.85rem;
   }
 }
