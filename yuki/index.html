@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="style-gallery.css">
+  <script src="https://meow.furrysobachka.ru/osu-cursor/dist/index.cjs.js"></script>
   <meta name="description" content="About furry uwu nyawka, with nickname howosy">
   <title>YukiMeow Arts</title>
 </head>
@@ -172,5 +173,25 @@
 
     loadGallery();
   </script>
+<!-- osu! cursor -->
+<style>
+  * {
+    cursor: none !important;
+  }
+  .osu-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cursor = new osuCursor({
+      rotate: true,
+      size: 1.0
+    });
+  });
+</script>
 </body>
 </html>
