@@ -1,0 +1,34 @@
+{
+  "name": "osu-cursor",
+  "version": "1.2.0",
+  "description": "osu!lazer Style Custom Cursor for Web",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "./typing.d.ts",
+  "files": [
+    "dist",
+    "typing.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/main.es.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./typing.d.ts"
+    }
+  },
+  "scripts": {
+    "watch": "cd demo && vite",
+    "build": "vite build",
+    "build:demo": "cd demo && vite build"
+  },
+  "author": "solstice23",
+  "license": "MIT",
+  "source": "src/main.js",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "devDependencies": {
+    "vite": "^2"
+  },
+  "dependencies": {
+    "animejs": "^3.2.1"
+  }
+}
