@@ -85,6 +85,8 @@ p {
 
 .line-image {
   position: absolute;
+  pointer-events: none;
+  user-select: none;
   height: auto;
   opacity: 0.8;
   z-index: 1;
