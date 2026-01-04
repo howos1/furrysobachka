@@ -164,6 +164,15 @@
   </script>
 <!-- osu! cursor -->
 <style>
+  * {
+      cursor: none !important;
+  }
+  .osu-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  
   @media (hover: none), (pointer: coarse) {
     * {
       cursor: none !important;
@@ -172,11 +181,8 @@
       display: none !important;
     }
   }
-  .osu-cursor {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-  }
+
+  
 </style>
 
 <script>

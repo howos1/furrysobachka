@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <a href="https://meow.furrysobachka.ru" class="back-button">
+  <a href="/" class="back-button">
     <i class="fas fa-arrow-left"></i> Назад
   </a>
 
@@ -175,6 +175,15 @@
   </script>
 <!-- osu! cursor -->
 <style>
+  * {
+      cursor: none !important;
+  }
+  .osu-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
   @media (hover: none), (pointer: coarse) {
     * {
       cursor: none !important;
@@ -182,11 +191,6 @@
     .osu-cursor {
       display: none !important;
     }
-  }
-  .osu-cursor {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
   }
 </style>
 
