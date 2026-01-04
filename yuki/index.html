@@ -175,8 +175,13 @@
   </script>
 <!-- osu! cursor -->
 <style>
-  * {
-    cursor: none !important;
+  @media (hover: none), (pointer: coarse) {
+    * {
+      cursor: none !important;
+    }
+    .osu-cursor {
+      display: none !important;
+    }
   }
   .osu-cursor {
     position: fixed;

@@ -97,6 +97,7 @@
       const rknLine = document.getElementById('rknLine');
       const artLine = document.getElementById('artLine');
       const musicLine = document.getElementById('musicLine');
+      const photosButton = document.querySelector('.photos-button');
       
       if (currentLang === 'ru') {
         document.querySelector('p').textContent = 'hi this is hws, i am on spotify, and you?';
@@ -111,6 +112,7 @@
         document.getElementById('like6').textContent = '· λ';
         document.getElementById('like7').textContent = "· 7\\";
         document.getElementById('footerText').textContent = '2020-2026 GrapeFruit© All rights furred.';
+        if (photosButton) photosButton.innerHTML = '<i class="fa-solid fa-image"></i> Drawings';
         
         if (rknLine) rknLine.src = 'img/eng/rknline.png';
         if (artLine) artLine.src = 'img/eng/artline.png';
@@ -131,6 +133,7 @@
         document.getElementById('like6').textContent = '· λ';
         document.getElementById('like7').textContent = "· 7\\";
         document.getElementById('footerText').textContent = '2020-2026 GrapeFruit© Все права зафырканы.';
+        if (photosButton) photosButton.innerHTML = '<i class="fa-solid fa-image"></i> Рисунки';
         
         if (rknLine) rknLine.src = 'img/rknline.png';
         if (artLine) artLine.src = 'img/artline.png';
@@ -161,8 +164,13 @@
   </script>
 <!-- osu! cursor -->
 <style>
-  * {
-    cursor: none !important;
+  @media (hover: none), (pointer: coarse) {
+    * {
+      cursor: none !important;
+    }
+    .osu-cursor {
+      display: none !important;
+    }
   }
   .osu-cursor {
     position: fixed;
