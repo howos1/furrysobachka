@@ -1,5 +1,11 @@
 [
   {
+    "author": "Fiks0_o",
+    "url": "https://meow.furrysobachka.ru/img/yukimeow/fiks.png",
+    "blur": true,
+    "femboy": false
+  },  
+  {
     "author": " ",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/end.jpg",
     "blur": false,
@@ -96,6 +102,7 @@
     "blur": false
   }
 ]
+
 
 
 
