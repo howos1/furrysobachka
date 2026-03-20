@@ -24,6 +24,14 @@
     <button class="close-button" id="closeButton">
       <i class="fas fa-times"></i>
     </button>
+    
+    <button class="nav-button prev-button" id="prevButton">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="nav-button next-button" id="nextButton">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+
     <img class="fullscreen-image" id="fullscreenImage" src="" alt="">
     <div class="fullscreen-author-container" id="fullscreenAuthorContainer">
       <div class="fullscreen-author" id="fullscreenAuthor"></div>
@@ -40,6 +48,7 @@
     let loadedCount = 0;
     const batchSize = 9;
     let isLoading = false;
+    let currentFullscreenIndex = 0;
 
     async function loadGallery() {
       try {
@@ -81,8 +90,11 @@
       const loadingElement = document.getElementById("loading");
       
       const nextBatch = allImages.slice(loadedCount, loadedCount + batchSize);
+      const currentBatchStart = loadedCount;
       
       nextBatch.forEach((item, index) => {
+        const absoluteIndex = currentBatchStart + index;
+
         setTimeout(() => {
           const div = document.createElement("div");
           div.className = "gallery-item";
@@ -101,7 +113,7 @@
           }
 
           img.addEventListener("click", () => {
-            openFullscreen(item.url, item.author, item.femboy);
+            openFullscreen(absoluteIndex);
           });
 
           const overlay = document.createElement("div");
@@ -133,32 +145,109 @@
     const fullscreenImage = document.getElementById("fullscreenImage");
     const fullscreenAuthor = document.getElementById("fullscreenAuthor");
     const fullscreenFemboy = document.getElementById("fullscreenFemboy");
-    const fullscreenAuthorContainer = document.getElementById("fullscreenAuthorContainer");
     const closeButton = document.getElementById("closeButton");
+    const nextButton = document.getElementById("nextButton");
+    const prevButton = document.getElementById("prevButton");
 
-    function openFullscreen(imageUrl, author, isFemboy) {
-      fullscreenImage.src = imageUrl;
-      fullscreenAuthor.textContent = `Автор: ${author}`;
-      
-      if (isFemboy) {
-        fullscreenFemboy.style.display = 'block';
-      } else {
-        fullscreenFemboy.style.display = 'none';
+    function resetElementsOpacity() {
+      const elements = [fullscreenImage, fullscreenAuthor, fullscreenFemboy];
+      elements.forEach(el => {
+        el.style.transition = '';
+        el.classList.remove('fade-in');
+        el.style.opacity = '';
+      });
+    }
+
+    function openFullscreen(index, isSwitching = false) {
+      currentFullscreenIndex = index;
+      const item = allImages[index];
+
+      const animatedElements = [fullscreenImage, fullscreenAuthor, fullscreenFemboy];
+
+      if (isSwitching) {
+        animatedElements.forEach(el => {
+          el.style.transition = 'none';
+          el.style.opacity = '0';
+          el.classList.remove('fade-in');
+        });
+        
+        fullscreenImage.src = item.url;
+        fullscreenAuthor.textContent = `Автор: ${item.author}`;
+        
+        if (item.femboy) {
+          fullscreenFemboy.style.display = 'block';
+        } else {
+          fullscreenFemboy.style.display = 'none';
+        }
+
+        requestAnimationFrame(() => {
+          animatedElements.forEach(el => {
+            el.style.transition = '';
+            el.classList.add('fade-in');
+          });
+        });
+      } 
+      else {
+        resetElementsOpacity();
+        
+        fullscreenImage.src = item.url;
+        fullscreenAuthor.textContent = `Автор: ${item.author}`;
+        
+        if (item.femboy) {
+          fullscreenFemboy.style.display = 'block';
+        } else {
+          fullscreenFemboy.style.display = 'none';
+        }
+
+        fullscreenOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        setTimeout(() => {
+          animatedElements.forEach(el => {
+            el.classList.add('fade-in');
+          });
+        }, 50);
       }
-      
-      fullscreenOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
     }
 
     function closeFullscreen() {
+      const animatedElements = [fullscreenImage, fullscreenAuthor, fullscreenFemboy];
+      animatedElements.forEach(el => {
+        el.classList.remove('fade-in');
+      });
+      
       fullscreenOverlay.classList.add('closing');
       setTimeout(() => {
         fullscreenOverlay.classList.remove('active', 'closing');
         document.body.style.overflow = 'auto';
+        animatedElements.forEach(el => {
+          el.style.opacity = '';
+        });
       }, 400);
     }
 
+    function showNextImage(e) {
+      if (e) e.stopPropagation();
+      let nextIndex = currentFullscreenIndex + 1;
+      if (nextIndex >= allImages.length) {
+        nextIndex = 0;
+      }
+      openFullscreen(nextIndex, true);
+    }
+
+    function showPrevImage(e) {
+      if (e) e.stopPropagation();
+      let prevIndex = currentFullscreenIndex - 1;
+      if (prevIndex < 0) {
+        prevIndex = allImages.length - 1;
+      }
+      openFullscreen(prevIndex, true);
+    }
+
     closeButton.addEventListener("click", closeFullscreen);
+    nextButton.addEventListener("click", showNextImage);
+    prevButton.addEventListener("click", showPrevImage);
+
     fullscreenOverlay.addEventListener("click", (e) => {
       if (e.target === fullscreenOverlay) {
         closeFullscreen();
@@ -166,14 +255,20 @@
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && fullscreenOverlay.classList.contains('active')) {
+      if (!fullscreenOverlay.classList.contains('active')) return;
+
+      if (e.key === 'Escape') {
         closeFullscreen();
+      } else if (e.key === 'ArrowRight') {
+        showNextImage();
+      } else if (e.key === 'ArrowLeft') {
+        showPrevImage();
       }
     });
 
     loadGallery();
   </script>
-<!-- osu! cursor -->
+
 <style>
   * {
       cursor: none !important;
@@ -204,5 +299,3 @@
 </script>
 </body>
 </html>
-
-
