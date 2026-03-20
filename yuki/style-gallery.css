@@ -247,7 +247,7 @@ h1 {
 .fullscreen-overlay.active .close-button {
   transform: scale(1);
   opacity: 1;
-  transition: all 0.3s ease 0.3s;
+  transition: all 0.3s ease;
 }
 
 .fullscreen-overlay.closing .close-button {
