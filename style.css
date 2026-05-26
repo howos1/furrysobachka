@@ -21,11 +21,6 @@ html, body {
   overflow-y: auto; 
 }
 
-::selection {
-  background-color: #ff007f;
-  color: #ffffff;
-}
-
 .container {
   max-width: 800px;
   width: 100%;
@@ -62,6 +57,19 @@ p {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
+}
+
+.like-content a {
+  color: #ffffff; 
+}
+
+.like-content a:hover {
+  color: #ff3300;
+  text-decoration: underline;
+}
+
+.like-content a:visited {
+  color: #9C9C9C; 
 }
 
 .link-item {
