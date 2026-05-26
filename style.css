@@ -21,6 +21,11 @@ html, body {
   overflow-y: auto; 
 }
 
+::selection {
+  background-color: #ff007f;
+  color: #ffffff;
+}
+
 .container {
   max-width: 800px;
   width: 100%;
