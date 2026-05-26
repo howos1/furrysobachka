@@ -64,12 +64,11 @@ p {
 }
 
 .like-content a:hover {
-  color: #ff3300;
-  text-decoration: underline;
+  color: #9C9C9C;
 }
 
 .like-content a:visited {
-  color: #9C9C9C; 
+  color: #ffffff; 
 }
 
 .link-item {
