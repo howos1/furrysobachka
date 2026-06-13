@@ -18,12 +18,6 @@
     "femboy": false
   },
   {
-    "author": "old2",
-    "url": "https://meow.furrysobachka.ru/img/yukimeow/old2.png",
-    "blur": false,
-    "femboy": false
-  },
-  {
     "author": "kvass4",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/kvass4.jpg",
     "blur": false,
@@ -32,6 +26,12 @@
   {
     "author": "old1",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/old1.png",
+    "blur": false,
+    "femboy": false
+  },
+  {
+    "author": "old2",
+    "url": "https://meow.furrysobachka.ru/img/yukimeow/old2.png",
     "blur": false,
     "femboy": false
   },
@@ -132,14 +132,14 @@
     "femboy": false
   },
   {
-    "author": "fiks2",
-    "url": "https://meow.furrysobachka.ru/img/yukimeow/fiks2.jpg",
+    "author": "fiks",
+    "url": "https://meow.furrysobachka.ru/img/yukimeow/fiks.png",
     "blur": false,
     "femboy": false
   },
   {
-    "author": "fiks",
-    "url": "https://meow.furrysobachka.ru/img/yukimeow/fiks.png",
+    "author": "fiks2",
+    "url": "https://meow.furrysobachka.ru/img/yukimeow/fiks2.jpg",
     "blur": false,
     "femboy": false
   },
