@@ -1,5 +1,17 @@
 [
   {
+    "author": "test",
+    "url": "https://meow.furrysobachka.ru/img/yukimeow/test.jpg",
+    "blur": false,
+    "femboy": false
+  },
+  {
+    "author": "test",
+    "url": "https://meow.furrysobachka.ru/img/yukimeow/test_blur.jpg",
+    "blur": true,
+    "femboy": false
+  },
+  {
     "author": "hiskill67",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/hiskill8.jpg",
     "blur": true,
@@ -46,31 +58,31 @@
     "url": "https://meow.furrysobachka.ru/img/yukimeow/hiskill67.jpg",
     "blur": true,
     "femboy": false
-  }, 
+  },
   {
     "author": "aboltyss42",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/aboltyss42.png",
     "blur": false,
     "femboy": false
-  },  
+  },
   {
     "author": "Gae4ka",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/Gae4ka.png",
     "blur": false,
     "femboy": false
-  },  
+  },
   {
     "author": "Fiks0_o",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/fiks2.jpg",
     "blur": false,
     "femboy": false
-  },  
+  },
   {
     "author": "Fiks0_o",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/fiks.png",
     "blur": true,
     "femboy": false
-  },  
+  },
   {
     "author": "kartoxa",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/end.jpg",
@@ -95,7 +107,7 @@
     "blur": true,
     "femboy": true
   },
-    {
+  {
     "author": "ch1punya",
     "url": "https://meow.furrysobachka.ru/img/yukimeow/kvass4.jpg",
     "blur": true
