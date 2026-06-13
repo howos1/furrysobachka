@@ -8,7 +8,7 @@ const baseUrl = 'https://meow.furrysobachka.ru/img/yukimeow/';
 
 fs.readdir(imgDir, (err, files) => {
   if (err) {
-    console.error('error:', err);
+    console.error('Ошибка чтения директории:', err);
     process.exit(1);
   }
 
@@ -43,5 +43,5 @@ fs.readdir(imgDir, (err, files) => {
   });
 
   fs.writeFileSync(outputFile, JSON.stringify(jsonResult, null, 2), 'utf-8');
-  console.log(`done!: ${jsonResult.length}`);
+  console.log(`Успешно сгенерировано и отсортировано элементов: ${jsonResult.length}`);
 });
