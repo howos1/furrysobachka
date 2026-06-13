@@ -3,8 +3,18 @@ const path = require('path');
 
 const imgDir = path.join(__dirname, 'img', 'yukimeow');
 const outputFile = path.join(__dirname, 'dist', 'yukimeow.json');
-
 const baseUrl = 'https://meow.furrysobachka.ru/img/yukimeow/';
+
+let existingData = [];
+if (fs.existsSync(outputFile)) {
+  try {
+    existingData = JSON.parse(fs.readFileSync(outputFile, 'utf-8'));
+  } catch (e) {
+    console.error('error, retry:', e);
+  }
+}
+
+const existingUrls = new Set(existingData.map(item => item.url));
 
 fs.readdir(imgDir, (err, files) => {
   if (err) {
@@ -12,36 +22,36 @@ fs.readdir(imgDir, (err, files) => {
     process.exit(1);
   }
 
-  const filesWithTime = files
+  const newImages = files
     .filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
     .map(file => {
-      const filePath = path.join(imgDir, file);
-      const stats = fs.statSync(filePath);
+      const fileUrl = `${baseUrl}${file}`;
+      
+      if (existingUrls.has(fileUrl)) return null;
+
+      const nameWithoutExt = path.parse(file).name;
+      const parts = nameWithoutExt.split('_');
+      
+      const author = parts[0] || 'Unknown';
+      const isBlur = parts.includes('blur');
+      const isFemboy = parts.includes('femboy');
+
       return {
-        name: file,
-        mtime: stats.mtimeMs
+        author: author,
+        url: fileUrl,
+        blur: isBlur,
+        femboy: isFemboy
       };
-    });
+    })
+    .filter(item => item !== null);
 
-  filesWithTime.sort((a, b) => b.mtime - a.mtime);
+  if (newImages.length === 0) {
+    console.log('nothing.');
+    return;
+  }
 
-  const jsonResult = filesWithTime.map(fileObj => {
-    const file = fileObj.name;
-    const nameWithoutExt = path.parse(file).name;
-    const parts = nameWithoutExt.split('_');
-    
-    const author = parts[0] || 'Unknown';
-    const isBlur = parts.includes('blur');
-    const isFemboy = parts.includes('femboy');
+  const updatedData = [...newImages, ...existingData];
 
-    return {
-      author: author,
-      url: `${baseUrl}${file}`,
-      blur: isBlur,
-      femboy: isFemboy
-    };
-  });
-
-  fs.writeFileSync(outputFile, JSON.stringify(jsonResult, null, 2), 'utf-8');
-  console.log(`done!: ${jsonResult.length}`);
+  fs.writeFileSync(outputFile, JSON.stringify(updatedData, null, 2), 'utf-8');
+  console.log(`done added: ${newImages.length}.`);
 });
