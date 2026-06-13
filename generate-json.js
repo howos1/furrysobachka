@@ -12,23 +12,35 @@ fs.readdir(imgDir, (err, files) => {
     process.exit(1);
   }
 
-  const jsonResult = files
+  const filesWithTime = files
     .filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
     .map(file => {
-      const nameWithoutExt = path.parse(file).name;
-      const parts = nameWithoutExt.split('_');
-      
-      const author = parts[0] || 'Unknown';
-      const isBlur = parts.includes('blur');
-      const isFemboy = parts.includes('femboy');
-
+      const filePath = path.join(imgDir, file);
+      const stats = fs.statSync(filePath);
       return {
-        author: author,
-        url: `${baseUrl}${file}`,
-        blur: isBlur,
-        femboy: isFemboy
+        name: file,
+        mtime: stats.mtimeMs
       };
     });
+
+  filesWithTime.sort((a, b) => b.mtime - a.mtime);
+
+  const jsonResult = filesWithTime.map(fileObj => {
+    const file = fileObj.name;
+    const nameWithoutExt = path.parse(file).name;
+    const parts = nameWithoutExt.split('_');
+    
+    const author = parts[0] || 'Unknown';
+    const isBlur = parts.includes('blur');
+    const isFemboy = parts.includes('femboy');
+
+    return {
+      author: author,
+      url: `${baseUrl}${file}`,
+      blur: isBlur,
+      femboy: isFemboy
+    };
+  });
 
   fs.writeFileSync(outputFile, JSON.stringify(jsonResult, null, 2), 'utf-8');
   console.log(`done!: ${jsonResult.length}`);
