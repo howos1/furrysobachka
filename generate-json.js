@@ -10,7 +10,7 @@ if (fs.existsSync(outputFile)) {
   try {
     existingData = JSON.parse(fs.readFileSync(outputFile, 'utf-8'));
   } catch (e) {
-    console.error('error, retry:', e);
+    console.error('error retry:', e);
   }
 }
 
@@ -53,5 +53,5 @@ fs.readdir(imgDir, (err, files) => {
   const updatedData = [...newImages, ...existingData];
 
   fs.writeFileSync(outputFile, JSON.stringify(updatedData, null, 2), 'utf-8');
-  console.log(`done added: ${newImages.length}.`);
+  console.log(`done! added: ${newImages.length}.`);
 });
