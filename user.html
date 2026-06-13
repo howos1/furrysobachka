@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="image/png" sizes="512x511" rel="icon" href="https://meow.furrysobachka.ru/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://meow.furrysobachka.ru/osu-cursor/dist/index.cjs.js"></script>
+  <meta name="description" content="About furry uwu nyawka">
+  <title>About Furry Nyawka</title>
+</head>
+<body>
+  <div class="container">
+    <h1>username</h1>
+    <div class="aka"><strong>user1 \ user1 \ user1</strong></div>
+    <p>привет это username</p>
+    <div class="links">
+      <div class="link-item">
+        <a href="https://www.grfruit.ru" target="_blank"><i class="fa-brands fa-internet-explorer"></i>GrapeFruit</a>
+      </div>
+      <div class="link-item">
+        <a href="https://steamcommunity.com" target="_blank"><i class="fa-brands fa-steam"></i>Steam</a>
+      </div>
+      <div class="link-item">
+        <a href="https://www.tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i>TikTok</a>
+      </div>
+      <div class="link-item">
+        <a href="https://www.twitch.tv" target="_blank"><i class="fa-brands fa-twitch"></i>Twitch</a>
+      </div>
+      <div class="link-item">
+        <a href="https://x.com" target="_blank"><i class="fa-brands fa-x-twitter"></i>X (Twitter)</a>
+      </div>
+      <div class="link-item">
+        <a href="https://github.com" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
+      </div>
+      <div class="link-item">
+        <a href="https://open.spotify.com" target="_blank"><i class="fa-brands fa-spotify"></i>Spotify</a>
+      </div>
+      <div class="link-item">
+        <a href="https://discord.com" target="_blank"><i class="fa-brands fa-discord"></i>Discord</a>
+      </div>
+    </div>
+
+    <div class="about-me" id="aboutMe">
+      <img src="https://meow.furrysobachka.ru/img/avatar.png" class="avatar-img">
+      <div class="bio-text">
+        <div class="like-section">
+          <h2 id="likesTitle">Увлекаюсь</h2>
+          <div class="like-content">
+            <p id="like1">· 1</p>
+            <p id="like2">· 2</p>
+            <p id="like3">· 3</p>
+            <p id="like4">· 4</p>
+            <p id="like5">· 5</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- osu! cursor -->
+<style>
+  * {
+      cursor: none !important;
+  }
+  .osu-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  
+  @media (hover: none), (pointer: coarse) {
+    * {
+      cursor: none !important;
+    }
+    .osu-cursor {
+      display: none !important;
+    }
+  }
+
+  
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cursor = new osuCursor({
+      rotate: true,
+      size: 1.0
+    });
+  });
+</script>
+</body>
+</html>

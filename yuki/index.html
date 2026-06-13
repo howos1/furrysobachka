@@ -52,7 +52,7 @@
 
     async function loadGallery() {
       try {
-        const response = await fetch("https://meow.furrysobachka.ru/dist/yukimeow.json");
+        const response = await fetch("../dist/yukimeow.json");
         allImages = await response.json();
         
         loadNextBatch();
