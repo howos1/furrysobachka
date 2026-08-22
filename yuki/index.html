@@ -43,12 +43,24 @@
     <i class="fas fa-arrow-left"></i> Назад
   </a>
 
+  <!-- Тумблер NSFW -->
+  <div class="nsfw-toggle">
+    <label class="switch">
+      <input type="checkbox" id="nsfwCheckbox">
+      <span class="slider"></span>
+    </label>
+    <span class="nsfw-label">NSFW</span>
+  </div>
+
   <script>
     let allImages = [];
     let loadedCount = 0;
     const batchSize = 9;
     let isLoading = false;
     let currentFullscreenIndex = 0;
+    let nsfwEnabled = false;
+
+    const nsfwCheckbox = document.getElementById('nsfwCheckbox');
 
     async function loadGallery() {
       try {
@@ -75,6 +87,33 @@
       
       if (scrollTop + windowHeight >= documentHeight - windowHeight * 0.2) {
         loadNextBatch();
+      }
+    }
+
+    function applyNSFW(state) {
+      nsfwEnabled = state;
+      localStorage.setItem('nsfwEnabled', state ? 'true' : 'false');
+
+      document.querySelectorAll('img[data-blur="true"]').forEach(img => {
+        if (state) {
+          img.classList.remove('nsfw-blurred');
+        } else {
+          img.classList.add('nsfw-blurred');
+        }
+      });
+
+      // Обновить полноэкранный режим, если открыт
+      if (fullscreenOverlay.classList.contains('active')) {
+        const item = allImages[currentFullscreenIndex];
+        if (item && item.blur) {
+          if (state) {
+            fullscreenImage.classList.remove('nsfw-blurred');
+          } else {
+            fullscreenImage.classList.add('nsfw-blurred');
+          }
+        } else {
+          fullscreenImage.classList.remove('nsfw-blurred');
+        }
       }
     }
 
@@ -107,9 +146,12 @@
           img.src = item.url;
           img.alt = `Рисунок от ${item.author}`;
           img.loading = "lazy";
-          
+
           if (item.blur) {
-            img.classList.add("blur-on-hover");
+            img.dataset.blur = "true";
+            if (!nsfwEnabled) {
+              img.classList.add('nsfw-blurred');
+            }
           }
 
           img.addEventListener("click", () => {
@@ -180,6 +222,17 @@
           fullscreenFemboy.style.display = 'none';
         }
 
+        // Применить NSFW-фильтр для текущего изображения
+        if (item.blur) {
+          if (!nsfwEnabled) {
+            fullscreenImage.classList.add('nsfw-blurred');
+          } else {
+            fullscreenImage.classList.remove('nsfw-blurred');
+          }
+        } else {
+          fullscreenImage.classList.remove('nsfw-blurred');
+        }
+
         requestAnimationFrame(() => {
           animatedElements.forEach(el => {
             el.style.transition = '';
@@ -197,6 +250,17 @@
           fullscreenFemboy.style.display = 'block';
         } else {
           fullscreenFemboy.style.display = 'none';
+        }
+
+        // Применить NSFW-фильтр
+        if (item.blur) {
+          if (!nsfwEnabled) {
+            fullscreenImage.classList.add('nsfw-blurred');
+          } else {
+            fullscreenImage.classList.remove('nsfw-blurred');
+          }
+        } else {
+          fullscreenImage.classList.remove('nsfw-blurred');
         }
 
         fullscreenOverlay.classList.add('active');
@@ -264,6 +328,20 @@
       } else if (e.key === 'ArrowLeft') {
         showPrevImage();
       }
+    });
+
+    // Инициализация NSFW из localStorage
+    const saved = localStorage.getItem('nsfwEnabled');
+    if (saved === 'true') {
+      nsfwCheckbox.checked = true;
+      applyNSFW(true);
+    } else {
+      nsfwCheckbox.checked = false;
+      applyNSFW(false);
+    }
+
+    nsfwCheckbox.addEventListener('change', function() {
+      applyNSFW(this.checked);
     });
 
     loadGallery();

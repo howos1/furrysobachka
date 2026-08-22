@@ -72,14 +72,10 @@ h1 {
   display: block;
 }
 
-.gallery-item img.blur-on-hover {
-  filter: blur(12px);
-  transition: filter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.gallery-item img.blur-on-hover:hover {
-  filter: blur(0);
-  transform: scale(1.02);
+/* NSFW blur – применяется при выключенном режиме */
+.nsfw-blurred {
+  filter: blur(12px) !important;
+  transition: filter 0.3s ease;
 }
 
 .author-overlay {
@@ -130,6 +126,77 @@ h1 {
   transform: scale(1.05);
 }
 
+/* Тумблер NSFW */
+.nsfw-toggle {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(20, 20, 20, 0.85);
+  padding: 8px 14px 8px 12px;
+  border-radius: 30px;
+  backdrop-filter: blur(4px);
+  z-index: 1001;
+  border: 1px solid #444;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #666;
+  transition: .3s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #ff69b4;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.nsfw-label {
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  user-select: none;
+}
+
 .fullscreen-overlay {
   position: fixed;
   top: 0;
@@ -174,6 +241,11 @@ h1 {
 .fullscreen-overlay.active .fullscreen-image {
   transform: scale(1);
   opacity: 1;
+}
+
+/* Фильтр для NSFW в полноэкранном режиме */
+.fullscreen-image.nsfw-blurred {
+  filter: blur(12px) !important;
 }
 
 .fade-in {
@@ -382,6 +454,29 @@ h1 {
   }
   .prev-button { left: 10px; }
   .next-button { right: 10px; }
+
+  .nsfw-toggle {
+    bottom: 70px;
+    right: 10px;
+    padding: 6px 10px;
+    gap: 6px;
+  }
+  .switch {
+    width: 40px;
+    height: 20px;
+  }
+  .slider:before {
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+  }
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+  .nsfw-label {
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -415,6 +510,28 @@ h1 {
   .fullscreen-femboy {
     bottom: 65px;
     font-size: 0.85rem;
+  }
+
+  .nsfw-toggle {
+    bottom: 60px;
+    right: 10px;
+    padding: 5px 8px;
+  }
+  .switch {
+    width: 36px;
+    height: 18px;
+  }
+  .slider:before {
+    height: 12px;
+    width: 12px;
+    left: 3px;
+    bottom: 3px;
+  }
+  input:checked + .slider:before {
+    transform: translateX(18px);
+  }
+  .nsfw-label {
+    font-size: 0.7rem;
   }
 }
 
