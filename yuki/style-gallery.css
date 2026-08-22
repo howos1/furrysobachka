@@ -72,7 +72,7 @@ h1 {
   display: block;
 }
 
-/* NSFW blur – применяется при выключенном режиме */
+/* NSFW blur – применяется при выключенном режиме (только для миниатюр) */
 .nsfw-blurred {
   filter: blur(12px) !important;
   transition: filter 0.3s ease;
@@ -181,8 +181,10 @@ h1 {
   border-radius: 50%;
 }
 
+/* Активное состояние — цвет в стиле сайта */
 input:checked + .slider {
-  background-color: #ff69b4;
+  background-color: #6C5B7B;
+  box-shadow: 0 0 10px rgba(108, 91, 123, 0.6);
 }
 
 input:checked + .slider:before {
@@ -243,9 +245,10 @@ input:checked + .slider:before {
   opacity: 1;
 }
 
-/* Фильтр для NSFW в полноэкранном режиме */
+/* В полноэкранном режиме блюр никогда не применяется */
 .fullscreen-image.nsfw-blurred {
-  filter: blur(12px) !important;
+  /* стиль не используется, но оставлен для безопасности */
+  filter: none !important;
 }
 
 .fade-in {
