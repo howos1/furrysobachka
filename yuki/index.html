@@ -43,7 +43,6 @@
     <i class="fas fa-arrow-left"></i> Назад
   </a>
 
-  <!-- Тумблер NSFW -->
   <div class="nsfw-toggle">
     <label class="switch">
       <input type="checkbox" id="nsfwCheckbox">
@@ -102,7 +101,6 @@
         }
       });
 
-      // Обновить полноэкранный режим, если открыт
       if (fullscreenOverlay.classList.contains('active')) {
         const item = allImages[currentFullscreenIndex];
         if (item && item.blur) {
@@ -222,7 +220,6 @@
           fullscreenFemboy.style.display = 'none';
         }
 
-        // Применить NSFW-фильтр для текущего изображения
         if (item.blur) {
           if (!nsfwEnabled) {
             fullscreenImage.classList.add('nsfw-blurred');
@@ -252,7 +249,6 @@
           fullscreenFemboy.style.display = 'none';
         }
 
-        // Применить NSFW-фильтр
         if (item.blur) {
           if (!nsfwEnabled) {
             fullscreenImage.classList.add('nsfw-blurred');
@@ -330,7 +326,6 @@
       }
     });
 
-    // Инициализация NSFW из localStorage
     const saved = localStorage.getItem('nsfwEnabled');
     if (saved === 'true') {
       nsfwCheckbox.checked = true;
