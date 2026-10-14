@@ -6,7 +6,7 @@
 
 body {
   font-family: "Comfortaa", sans-serif;
-  background: linear-gradient(2deg, #000000, #3A3A5E)
+  background: linear-gradient(2deg, #000000, #3A3A5E);
   color: #fff;
   display: flex;
   flex-direction: column;
