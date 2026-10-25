@@ -57,7 +57,7 @@
       <img src="https://meow.furrysobachka.ru/img/avatar.png" class="avatar-img">
       <div class="bio-text">
         <h2 id="aboutTitle">Немножка обо мне</h2>
-        <p id="aboutText">Создатель UeRKN, Oxygène, Косточка, пишу музяку, рисую фурре и всякое такое</p>
+        <p id="aboutText">Создатель <a href="https://github.com/howos1/UeRKN">UeRKN</a>, <a href="https://oxygene.grfruit.ru">Oxygène</a>, <a href="https://quartz.furrysobachka.ru">quartz</a>, пишу музяку, рисую фурре и всякое такое</p>
         
         <div class="like-section">
           <h2 id="likesTitle">Шарю за :3/Увлекаюсь</h2>
@@ -103,12 +103,13 @@
       const rknLine = document.getElementById('rknLine');
       const artLine = document.getElementById('artLine');
       const musicLine = document.getElementById('musicLine');
+      const ringLine = document.getElementById('ringLine');
       const photosButton = document.querySelector('.photos-button');
       
       if (currentLang === 'ru') {
         document.querySelector('p').textContent = 'hi this is hws, i am on spotify, and you?';
         document.getElementById('aboutTitle').textContent = 'A little about me';
-        document.getElementById('aboutText').textContent = 'Creator of UeRKN, Oxygène, SourPith, I write music, draw furries and stuff';
+        document.getElementById('aboutText').innerHTML = 'Creator of <a href="https://github.com/howos1/UeRKN">UeRKN</a>, <a href="https://oxygene.grfruit.ru">Oxygène</a>, <a href="https://quartz.furrysobachka.ru">quartz</a>, I write music, draw furries and stuff';
         document.getElementById('likesTitle').textContent = 'I know about :3/hobbies';
         document.getElementById('like1').textContent = '· ShuAke';
         document.getElementById('like2').textContent = '· Fluffys';
@@ -124,13 +125,14 @@
         if (rknLine) rknLine.src = 'img/eng/rknline.png';
         if (artLine) artLine.src = 'img/eng/artline.png';
         if (musicLine) musicLine.src = 'img/eng/musicline.png';
+        if (ringLine) ringLine.src = 'img/eng/ringline.png';
         
         currentLang = 'en';
         langSwitch.innerHTML = '<img src="img/ru.png" alt="RU">';
       } else {
         document.querySelector('p').textContent = 'привет это хвс, я есть в спотифай, а ты?';
         document.getElementById('aboutTitle').textContent = 'Немножка обо мне';
-        document.getElementById('aboutText').textContent = 'Создатель UeRKN, Oxygène, Косточка, пишу музяку, рисую фурре и всякое такое';
+        document.getElementById('aboutText').innerHTML = 'Создатель <a href="https://github.com/howos1/UeRKN">UeRKN</a>, <a href="https://oxygene.grfruit.ru">Oxygène</a>, <a href="https://quartz.furrysobachka.ru">quartz</a>, пишу музяку, рисую фурре и всякое такое';
         document.getElementById('likesTitle').textContent = 'Шарю за :3/Увлекаюсь';
         document.getElementById('like1').textContent = '· шуаке канон';
         document.getElementById('like2').textContent = '· фуряшке';
@@ -146,6 +148,7 @@
         if (rknLine) rknLine.src = 'img/rknline.png';
         if (artLine) artLine.src = 'img/artline.png';
         if (musicLine) musicLine.src = 'img/musicline.png';
+        if (ringLine) ringLine.src = 'img/ringline.png';
         
         currentLang = 'ru';
         langSwitch.innerHTML = '<img src="img/us.png" alt="EN">';

@@ -59,15 +59,15 @@ p {
   gap: 1rem;
 }
 
-.like-content a {
+a {
   color: #ffffff; 
 }
 
-.like-content a:hover {
+a:hover {
   color: #9C9C9C;
 }
 
-.like-content a:visited {
+a:visited {
   color: #ffffff; 
 }
 
