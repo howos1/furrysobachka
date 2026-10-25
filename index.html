@@ -11,11 +11,11 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://meow.furrysobachka.ru/osu-cursor/dist/index.cjs.js"></script>
   <meta name="description" content="About furry uwu nyawka, with nickname howosy">
-  <title>About Furry Nyawka</title>
+  <title>Furry Sobachka</title>
 </head>
 <body>
   <div class="language-switcher">
-    <button id="langSwitch">EN</button>
+    <button id="langSwitch"><img src="img/us.png" alt="EN"></button>
   </div>
   
   <div class="container">
@@ -53,6 +53,7 @@
     </div>
 
     <div class="about-me" id="aboutMe">
+      
       <img src="https://meow.furrysobachka.ru/img/avatar.png" class="avatar-img">
       <div class="bio-text">
         <h2 id="aboutTitle">Немножка обо мне</h2>
@@ -75,16 +76,20 @@
     </div>
   </div>
 
-  <div class="myfriends" id="myfriends">
-    <div class="bio-text">
-      <!-- <a href="https://somedott.space"><img src="https://somedott.space/Button.png"></a> -->
-      <!-- <a href="https://puhnasty61.github.io"><img src="https://puhnasty61.github.io/PUHNAFTYBUTTON.jpg"></a> -->
-      <a href="https://www.grfruit.ru"><img src="https://cdn.grfruit.ru/img/grfruit_button.png"></a> 
-      <!-- <a href="https://sakeyo.space"><img src="https://sakeyo.space/images/SakeButton.png"></a> -->
-      <img src="https://88by31.neocities.org/music/funny.gif">
-      <img src="https://88by31.neocities.org/web/noteoth2.gif">
-      <img src="https://meow.furrysobachka.ru/img/misterp.png">
-      <p id="footerText">2020-2026 GrapeFruit© Все права зафырканы.</p>
+  <div class="bottom-section">
+    <div class="webring-wrapper">
+      <iframe class="webring-iframe" src="https://shizonyash.github.io/widget.html?id=meow.furrysobachka.ru" frameborder="0"></iframe>
+      <img src="img/ringline.png" class="ringline-image" id="ringLine">
+    </div>
+
+    <div class="myfriends" id="myfriends">
+      <div class="bio-text">
+        <a href="https://www.grfruit.ru"><img src="https://cdn.grfruit.ru/img/grfruit_button.png"></a> 
+        <img src="https://88by31.neocities.org/music/funny.gif">
+        <img src="https://88by31.neocities.org/web/noteoth2.gif">
+        <img src="https://meow.furrysobachka.ru/img/misterp.png">
+        <p id="footerText">2020-2026 GrapeFruit© Все права зафырканы.</p>
+      </div>
     </div>
   </div>
 
@@ -121,7 +126,7 @@
         if (musicLine) musicLine.src = 'img/eng/musicline.png';
         
         currentLang = 'en';
-        langSwitch.textContent = 'RU';
+        langSwitch.innerHTML = '<img src="img/ru.png" alt="RU">';
       } else {
         document.querySelector('p').textContent = 'привет это хвс, я есть в спотифай, а ты?';
         document.getElementById('aboutTitle').textContent = 'Немножка обо мне';
@@ -143,7 +148,7 @@
         if (musicLine) musicLine.src = 'img/musicline.png';
         
         currentLang = 'ru';
-        langSwitch.textContent = 'EN';
+        langSwitch.innerHTML = '<img src="img/us.png" alt="EN">';
       }
     });
 
@@ -165,7 +170,9 @@
     window.addEventListener("resize", checkScroll);
     window.addEventListener("load", checkScroll);
   </script>
+
 <!-- osu! cursor -->
+
 <style>
   * {
       cursor: none !important;
@@ -184,8 +191,6 @@
       display: none !important;
     }
   }
-
-  
 </style>
 
 <script>
@@ -196,5 +201,6 @@
     });
   });
 </script>
+
 </body>
 </html>
