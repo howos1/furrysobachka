@@ -1,0 +1,1111 @@
+!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лаборатория Анимаций Фона (10 в 1)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050510;
+            color: #fff;
+        }
+
+        /* Основной холст для JS анимаций */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: none;
+        }
+
+        /* CSS Живой градиент */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(-45deg, #1f1c2c, #928dab, #ff4e50, #f9d423, #00c6ff, #0072ff);
+            background-size: 600% 600%;
+            animation: gradientMove 20s ease infinite;
+            display: block;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Главный интерфейс управления */
+        .interface-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .interface-container.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        .card {
+            background: rgba(10, 11, 26, 0.65);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ffffff, #b0b5c0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: #b3b8c4;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        /* Сетка пресетов */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 520px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            .card { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+        }
+
+        button.nav-btn {
+            background: rgba(255, 255, 255, 0.04);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        button.nav-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        button.nav-btn.active {
+            background: #00f0ff;
+            border-color: #00f0ff;
+            color: #050510;
+            font-weight: 700;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+        }
+
+        /* Панель дополнительных утилит */
+        .utility-panel {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        button.action-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        button.action-btn:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        button.hide-panel-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+        }
+        button.hide-panel-btn:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        /* Кнопка возврата меню (когда интерфейс скрыт) */
+        .show-interface-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 100;
+            background: rgba(10, 11, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .show-interface-btn.visible {
+            opacity: 0.6;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .show-interface-btn.visible:hover {
+            opacity: 1;
+            background: #00f0ff;
+            color: #000;
+            border-color: #00f0ff;
+        }
+
+        /* Модальное окно для кода */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #0d0e1b;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.open .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00f0ff;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover { color: #fff; }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .code-container {
+            position: relative;
+            background: #04040a;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        textarea.code-area {
+            width: 100%;
+            height: 380px;
+            background: transparent;
+            color: #a6accd;
+            border: none;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+        }
+
+        .copy-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #00f0ff;
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .copy-status.show { opacity: 1; }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Контейнеры Фонов -->
+    <div class="gradient-bg" id="gradient-bg"></div>
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- Главный Панель Интерфейса -->
+    <div class="interface-container" id="interface-container">
+        <div class="card">
+            <h1>Генератор Эмбед-Фонов</h1>
+            <p>Выбери стиль, скрой меню для теста или скопируй чистый код в 1 клик</p>
+            
+            <div class="controls-grid">
+                <button class="nav-btn active" onclick="changeBg('gradient', this)">🌈 1. Живой градиент</button>
+                <button class="nav-btn" onclick="changeBg('particles', this)">✨ 2. Созвездия</button>
+                <button class="nav-btn" onclick="changeBg('matrix', this)">💻 3. Матрица</button>
+                <button class="nav-btn" onclick="changeBg('snow', this)">❄️ 4. Снегопад</button>
+                <button class="nav-btn" onclick="changeBg('warp', this)">🚀 5. Гиперпрыжок</button>
+                <button class="nav-btn" onclick="changeBg('waves', this)">🌊 6. Кибер-Волны</button>
+                <button class="nav-btn" onclick="changeBg('bokeh', this)">🫧 7. Неоновый Боке</button>
+                <button class="nav-btn" onclick="changeBg('fireflies', this)">🔥 8. Светлячки</button>
+                <button class="nav-btn" onclick="changeBg('vortex', this)">🌀 9. Гравивихрь</button>
+                <button class="nav-btn" onclick="changeBg('plasma', this)">🌌 10. Кибер-Плазма</button>
+            </div>
+
+            <div class="utility-panel">
+                <button class="action-btn" onclick="openCodeModal()">📋 Скопировать код</button>
+                <button class="action-btn hide-panel-btn" onclick="toggleInterface(true)">👁️ Скрыть меню</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Маленькая плавающая кнопка возврата -->
+    <button class="show-interface-btn" id="show-interface-btn" onclick="toggleInterface(false)">
+        👁️ Показать меню управления
+    </button>
+
+    <!-- Модалка экспорта кода -->
+    <div class="modal-overlay" id="code-modal" onclick="closeModalOnOverlay(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title-text">Готовый эмбед-код</div>
+                <button class="modal-close" onclick="closeCodeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom:12px; font-size:0.9rem; text-align:left;">Вставьте этот кусок кода в любое место вашего HTML-файла (желательно перед закрывающим тегом &lt;/body&gt;). Он автоматически создаст фоновый адаптивный слой.</p>
+                <div class="code-container">
+                    <div class="copy-status" id="copy-status">Скопировано!</div>
+                    <textarea class="code-area" id="code-textarea" readonly></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn" onclick="copyToClipboard()" style="background:#00f0ff; color:#000; border-color:#00f0ff;">📋 Скопировать весь код</button>
+                <button class="action-btn" onclick="closeCodeModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        const gradientBg = document.getElementById('gradient-bg');
+        const interfaceContainer = document.getElementById('interface-container');
+        const showInterfaceBtn = document.getElementById('show-interface-btn');
+        const modal = document.getElementById('code-modal');
+        const codeTextarea = document.getElementById('code-textarea');
+        const modalTitleText = document.getElementById('modal-title-text');
+        const copyStatus = document.getElementById('copy-status');
+        
+        let currentMode = 'gradient';
+        let animationFrameId;
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        let items = [];
+
+        // Перерасчет размеров экрана
+        window.addEventListener('resize', () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            initCurrentMode();
+        });
+
+        // Спрятать / показать интерфейс управления
+        function toggleInterface(hide) {
+            if (hide) {
+                interfaceContainer.classList.add('hidden');
+                showInterfaceBtn.classList.add('visible');
+            } else {
+                interfaceContainer.classList.remove('hidden');
+                showInterfaceBtn.classList.remove('visible');
+            }
+        }
+
+        // База изолированных чистых кодов для встраивания
+        const embedCodes = {
+            gradient: `<!-- НАЧАЛО АНИМАЦИИ: Живой градиент -->
+<div class="embed-gradient-bg"></div>
+<style>
+    .embed-gradient-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+        background: linear-gradient(-45deg, #1f1c2c, #928dab, #ff4e50, #f9d423, #00c6ff, #0072ff);
+        background-size: 600% 600%;
+        animation: embedGradientAnim 20s ease infinite;
+    }
+    @keyframes embedGradientAnim {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+</style>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            particles: `<!-- НАЧАЛО АНИМАЦИИ: Созвездия -->
+<canvas id="particles-canvas"></canvas>
+<style>
+    #particles-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+        background-color: #0b0b1e;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        let pts = [];
+
+        function init() {
+            pts = [];
+            const count = Math.floor((w * h) / 10000);
+            for (let i = 0; i < count; i++) {
+                pts.push({
+                    x: Math.random()*w, y: Math.random()*h,
+                    radius: Math.random()*2+1,
+                    vx: (Math.random()-0.5)*0.6, vy: (Math.random()-0.5)*0.6
+                });
+            }
+        }
+
+        function loop() {
+            ctx.fillStyle = '#0b0b1e'; ctx.fillRect(0, 0, w, h);
+            pts.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > w) p.vx *= -1;
+                if (p.y < 0 || p.y > h) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+                ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.fill();
+            });
+            for (let i = 0; i < pts.length; i++) {
+                for (let j = i+1; j < pts.length; j++) {
+                    let d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+                    if (d < 120) {
+                        ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+                        ctx.strokeStyle = "rgba(0, 240, 255," + (0.2 - d/120) + ")";
+                        ctx.lineWidth = 0.5; ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; init(); });
+        init(); loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            matrix: `<!-- НАЧАЛО АНИМАЦИИ: Матрица -->
+<canvas id="matrix-canvas"></canvas>
+<style>
+    #matrix-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        let cols = Math.floor(w / 20);
+        let drops = Array(cols).fill(1);
+        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZｱｲｳｴｵｶｷｸｹｺ'.split('');
+
+        function loop() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = '#0F0'; ctx.font = '15px monospace';
+            drops.forEach((y, i) => {
+                const txt = chars[Math.floor(Math.random()*chars.length)];
+                ctx.fillText(txt, i*20, y*20);
+                if (y*20 > h && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { 
+            w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
+            cols = Math.floor(w / 20); drops = Array(cols).fill(1);
+        });
+        loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            snow: `<!-- НАЧАЛО АНИМАЦИИ: Снегопад -->
+<canvas id="snow-canvas"></canvas>
+<style>
+    #snow-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+        background: #080816;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('snow-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        let flakes = [];
+
+        function init() {
+            flakes = [];
+            for (let i = 0; i < 150; i++) {
+                flakes.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*3+1, v: Math.random()*1+0.5 });
+            }
+        }
+        function loop() {
+            ctx.fillStyle = '#080816'; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            flakes.forEach(s => {
+                s.y += s.v; s.x += Math.sin(s.y * 0.01) * 0.3;
+                if (s.y > h) { s.y = -10; s.x = Math.random()*w; }
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; init(); });
+        init(); loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            warp: `<!-- НАЧАЛО АНИМАЦИИ: Гиперпрыжок -->
+<canvas id="warp-canvas"></canvas>
+<style>
+    #warp-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+        background: #03030a;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('warp-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        let stars = [];
+
+        function init() {
+            stars = [];
+            for (let i = 0; i < 300; i++) {
+                stars.push({ x: Math.random()*w - w/2, y: Math.random()*h - h/2, z: Math.random()*w });
+            }
+        }
+        function loop() {
+            ctx.fillStyle = 'rgba(10, 10, 25, 0.2)'; ctx.fillRect(0, 0, w, h);
+            stars.forEach(s => {
+                s.z -= 8;
+                if (s.z <= 0) { s.z = w; s.x = Math.random()*w - w/2; s.y = Math.random()*h - h/2; }
+                let k = 150 / s.z;
+                let px = s.x * k + w/2; let py = s.y * k + h/2;
+                if (px >= 0 && px <= w && py >= 0 && py <= h) {
+                    ctx.fillStyle = '#fff'; ctx.fillRect(px, py, Math.max(1, k*0.5), Math.max(1, k*0.5));
+                }
+            });
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; init(); });
+        init(); loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            waves: `<!-- НАЧАЛО АНИМАЦИИ: Кибер-Волны -->
+<canvas id="waves-canvas"></canvas>
+<style>
+    #waves-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+        background: #0b0b1e;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('waves-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+
+        function loop() {
+            ctx.fillStyle = '#0b0b1e'; ctx.fillRect(0, 0, w, h);
+            for(let i=0; i<4; i++) {
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(233, 30, 99,' + (0.15 + i*0.05) + ')'; ctx.lineWidth = 2;
+                for(let x=0; x<w; x+=15) {
+                    let y = h/2 + Math.sin(x*0.003 + Date.now()*0.0015 + i*0.8) * 120 * Math.sin(Date.now()*0.0005);
+                    if(x===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; });
+        loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            bokeh: `<!-- НАЧАЛО АНИМАЦИИ: Неоновый Боке -->
+<canvas id="bokeh-canvas"></canvas>
+<style>
+    #bokeh-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+        background: #0d0214;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('bokeh-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        let circles = [];
+
+        function init() {
+            circles = [];
+            for (let i = 0; i < 40; i++) {
+                circles.push({
+                    x: Math.random()*w, y: Math.random()*h, r: Math.random()*40+20, vy: Math.random()*0.3+0.1,
+                    color: 'hsla(' + Math.random()*360 + ', 70%, 60%, 0.12)'
+                });
+            }
+        }
+        function loop() {
+            ctx.fillStyle = '#0d0214'; ctx.fillRect(0, 0, w, h);
+            circles.forEach(b => {
+                b.y -= b.vy; if (b.y < -b.r) b.y = h + b.r;
+                ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+                ctx.fillStyle = b.color; ctx.fill();
+            });
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; init(); });
+        init(); loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            fireflies: `<!-- НАЧАЛО АНИМАЦИИ: Светлячки -->
+<canvas id="fireflies-canvas"></canvas>
+<style>
+    #fireflies-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+        background: #0c0c0e;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('fireflies-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        let flies = [];
+
+        function init() {
+            flies = [];
+            for (let i = 0; i < 60; i++) {
+                flies.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*2+1, angle: Math.random()*Math.PI*2, speed: Math.random()*0.5+0.2 });
+            }
+        }
+        function loop() {
+            ctx.fillStyle = 'rgba(12, 12, 14, 0.4)'; ctx.fillRect(0, 0, w, h);
+            flies.forEach(f => {
+                f.angle += (Math.random()-0.5)*0.4; f.x += Math.cos(f.angle)*f.speed; f.y += Math.sin(f.angle)*f.speed;
+                if(f.x<0) f.x=w; if(f.x>w) f.x=0; if(f.y<0) f.y=h; if(f.y>h) f.y=0;
+                ctx.beginPath(); ctx.arc(f.x, f.y, f.r + Math.abs(Math.sin(Date.now()*0.003)*1.5), 0, Math.PI*2);
+                ctx.fillStyle = '#e6ff00'; ctx.shadowBlur = 10; ctx.shadowColor = '#e6ff00'; ctx.fill();
+                ctx.shadowBlur = 0;
+            });
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; init(); });
+        init(); loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            vortex: `<!-- НАЧАЛО АНИМАЦИИ: Гравивихрь -->
+<canvas id="vortex-canvas"></canvas>
+<style>
+    #vortex-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+        background: #0a0514;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('vortex-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        let elements = [];
+
+        function init() {
+            elements = [];
+            for (let i = 0; i < 200; i++) {
+                elements.push({ angle: Math.random()*Math.PI*2, r: Math.random()*(Math.min(w,h)/2), speed: Math.random()*0.01+0.002, size: Math.random()*2 });
+            }
+        }
+        function loop() {
+            ctx.fillStyle = 'rgba(10, 5, 20, 0.08)'; ctx.fillRect(0, 0, w, h);
+            elements.forEach(v => {
+                v.angle += v.speed;
+                let x = w/2 + Math.cos(v.angle)*v.r; let y = h/2 + Math.sin(v.angle)*v.r;
+                ctx.beginPath(); ctx.arc(x, y, v.size, 0, Math.PI*2);
+                ctx.fillStyle = 'hsla(' + v.r + ', 80%, 60%, 0.8)'; ctx.fill();
+            });
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; init(); });
+        init(); loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`,
+
+            plasma: `<!-- НАЧАЛО АНИМАЦИИ: Кибер-Плазма -->
+<canvas id="plasma-canvas"></canvas>
+<style>
+    #plasma-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -999;
+    }
+</style>
+<script>
+    (function() {
+        const canvas = document.getElementById('plasma-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth / 4; // низкое разрешение для производительности плазмы
+        let h = canvas.height = window.innerHeight / 4;
+        canvas.style.width = '100%'; canvas.style.height = '100%';
+
+        let time = 0;
+        function loop() {
+            time += 0.02;
+            let imgData = ctx.createImageData(w, h);
+            let data = imgData.data;
+
+            for (let x = 0; x < w; x++) {
+                for (let y = 0; y < h; y++) {
+                    let val = Math.sin(x * 0.05 + time) + Math.sin(y * 0.05 + time) + Math.sin((x + y) * 0.05 + time);
+                    val = (val + 3) / 6 * 255; // Нормализация в 0-255
+
+                    let idx = (x + y * w) * 4;
+                    data[idx] = val * 0.3;         // R
+                    data[idx + 1] = val * 0.1;     // G
+                    data[idx + 2] = val * 0.8;     // B
+                    data[idx + 3] = 255;           // A
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+            requestAnimationFrame(loop);
+        }
+        window.addEventListener('resize', () => { w = canvas.width = window.innerWidth/4; h = canvas.height = window.innerHeight/4; });
+        loop();
+    })();
+<\/script>
+<!-- КОНЕЦ АНИМАЦИИ -->`
+        };
+
+        // Открытие модалки с кодом
+        function openCodeModal() {
+            const modeNames = {
+                gradient: "1. Живой градиент (CSS)",
+                particles: "2. Интерактивные созвездия (Canvas)",
+                matrix: "3. Цифровой код Матрицы (Canvas)",
+                snow: "4. Магический снегопад (Canvas)",
+                warp: "5. Космический гиперпрыжок (Canvas)",
+                waves: "6. Математические неоновые волны (Canvas)",
+                bokeh: "7. Размытый боке-эффект (Canvas)",
+                fireflies: "8. Живые светлячки (Canvas)",
+                vortex: "9. Космический гравивихрь (Canvas)",
+                plasma: "10. Фрактальная кибер-плазма (Canvas)"
+            };
+
+            modalTitleText.textContent = `Код для встраивания: ${modeNames[currentMode]}`;
+            codeTextarea.value = embedCodes[currentMode];
+            modal.classList.add('open');
+        }
+
+        function closeCodeModal() {
+            modal.classList.remove('open');
+        }
+
+        function closeModalOnOverlay(e) {
+            if(e.target === modal) closeCodeModal();
+        }
+
+        // Логика копирования буфера обмена
+        function copyToClipboard() {
+            codeTextarea.select();
+            document.execCommand('copy');
+            copyStatus.classNames = "copy-status";
+            copyStatus.classList.add('show');
+            setTimeout(() => {
+                copyStatus.classList.remove('show');
+            }, 1500);
+        }
+
+        // --- ДВИЖОК ТЕКУЩЕЙ СТРАНИЦЫ ---
+        function initCurrentMode() {
+            items = [];
+            if (currentMode === 'particles') {
+                const count = Math.floor((w * h) / 10000);
+                for (let i = 0; i < count; i++) {
+                    items.push({ x: Math.random()*w, y: Math.random()*h, radius: Math.random()*2+1, vx: (Math.random()-0.5)*0.6, vy: (Math.random()-0.5)*0.6 });
+                }
+            } 
+            else if (currentMode === 'matrix') {
+                const columns = Math.floor(w / 20);
+                items = Array(columns).fill(1);
+            } 
+            else if (currentMode === 'snow') {
+                for (let i = 0; i < 150; i++) {
+                    items.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*3+1, v: Math.random()*1+0.5 });
+                }
+            } 
+            else if (currentMode === 'warp') {
+                for (let i = 0; i < 300; i++) {
+                    items.push({ x: Math.random()*w - w/2, y: Math.random()*h - h/2, z: Math.random()*w });
+                }
+            }
+            else if (currentMode === 'bokeh') {
+                for (let i = 0; i < 40; i++) {
+                    items.push({
+                        x: Math.random()*w, y: Math.random()*h, r: Math.random()*40+20, vy: Math.random()*0.3+0.1,
+                        color: `hsla(${Math.random()*360}, 70%, 60%, 0.12)`
+                    });
+                }
+            }
+            else if (currentMode === 'fireflies') {
+                for (let i = 0; i < 60; i++) {
+                    items.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*2+1, angle: Math.random()*Math.PI*2, speed: Math.random()*0.5+0.2 });
+                }
+            }
+            else if (currentMode === 'vortex') {
+                for (let i = 0; i < 200; i++) {
+                    items.push({ angle: Math.random()*Math.PI*2, r: Math.random()*(Math.min(w,h)/2), speed: Math.random()*0.01+0.002, size: Math.random()*2 });
+                }
+            }
+            else if (currentMode === 'plasma') {
+                // Масштабируем холст вниз для ускорения математики плазмы
+                canvas.width = w / 4;
+                canvas.height = h / 4;
+            }
+        }
+
+        let plasmaTime = 0;
+
+        function draw() {
+            if (currentMode === 'particles') {
+                ctx.fillStyle = '#050510'; ctx.fillRect(0, 0, w, h);
+                items.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > w) p.vx *= -1; if (p.y < 0 || p.y > h) p.vy *= -1;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+                    ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.fill();
+                });
+                for (let i = 0; i < items.length; i++) {
+                    for (let j = i+1; j < items.length; j++) {
+                        let dist = Math.hypot(items[i].x - items[j].x, items[i].y - items[j].y);
+                        if (dist < 120) {
+                            ctx.beginPath(); ctx.moveTo(items[i].x, items[i].y); ctx.lineTo(items[j].x, items[j].y);
+                            ctx.strokeStyle = `rgba(0, 240, 255, ${0.2 - dist/120})`; ctx.lineWidth = 0.5; ctx.stroke();
+                        }
+                    }
+                }
+            } 
+            else if (currentMode === 'matrix') {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; ctx.fillRect(0, 0, w, h);
+                ctx.fillStyle = '#0F0'; ctx.font = '15px monospace';
+                const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZｱｲｳｴｵｶｷｸｹｺ'.split('');
+                items.forEach((y, i) => {
+                    const text = chars[Math.floor(Math.random()*chars.length)];
+                    ctx.fillText(text, i*20, y*20);
+                    if (y*20 > h && Math.random() > 0.975) items[i] = 0;
+                    items[i]++;
+                });
+            }
+            else if (currentMode === 'snow') {
+                ctx.fillStyle = '#080816'; ctx.fillRect(0, 0, w, h);
+                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                items.forEach(s => {
+                    s.y += s.v; s.x += Math.sin(s.y * 0.01) * 0.3;
+                    if (s.y > h) { s.y = -10; s.x = Math.random()*w; }
+                    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+                });
+            }
+            else if (currentMode === 'warp') {
+                ctx.fillStyle = 'rgba(10, 10, 25, 0.2)'; ctx.fillRect(0, 0, w, h);
+                items.forEach(s => {
+                    s.z -= 8;
+                    if (s.z <= 0) { s.z = w; s.x = Math.random()*w - w/2; s.y = Math.random()*h - h/2; }
+                    let k = 150 / s.z;
+                    let px = s.x * k + w/2; let py = s.y * k + h/2;
+                    if (px >= 0 && px <= w && py >= 0 && py <= h) {
+                        ctx.fillStyle = '#fff'; ctx.fillRect(px, py, Math.max(1, k*0.5), Math.max(1, k*0.5));
+                    }
+                });
+            }
+            else if (currentMode === 'waves') {
+                ctx.fillStyle = '#0b0b1e'; ctx.fillRect(0, 0, w, h);
+                for(let i=0; i<4; i++) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(233, 30, 99, ${0.15 + i*0.05})`; ctx.lineWidth = 2;
+                    for(let x=0; x<w; x+=15) {
+                        let y = h/2 + Math.sin(x*0.003 + Date.now()*0.0015 + i*0.8) * 120 * Math.sin(Date.now()*0.0005);
+                        if(x===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                }
+            }
+            else if (currentMode === 'bokeh') {
+                ctx.fillStyle = '#0d0214'; ctx.fillRect(0, 0, w, h);
+                items.forEach(b => {
+                    b.y -= b.vy; if (b.y < -b.r) b.y = h + b.r;
+                    ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+                    ctx.fillStyle = b.color; ctx.fill();
+                });
+            }
+            else if (currentMode === 'fireflies') {
+                ctx.fillStyle = 'rgba(12, 12, 14, 0.4)'; ctx.fillRect(0, 0, w, h);
+                items.forEach(f => {
+                    f.angle += (Math.random()-0.5)*0.4; f.x += Math.cos(f.angle)*f.speed; f.y += Math.sin(f.angle)*f.speed;
+                    if(f.x<0) f.x=w; if(f.x>w) f.x=0; if(f.y<0) f.y=h; if(f.y>h) f.y=0;
+                    ctx.beginPath(); ctx.arc(f.x, f.y, f.r + Math.abs(Math.sin(Date.now()*0.003)*1.5), 0, Math.PI*2);
+                    ctx.fillStyle = '#e6ff00'; ctx.shadowBlur = 10; ctx.shadowColor = '#e6ff00'; ctx.fill();
+                    ctx.shadowBlur = 0;
+                });
+            }
+            else if (currentMode === 'vortex') {
+                ctx.fillStyle = 'rgba(10, 5, 20, 0.08)'; ctx.fillRect(0, 0, w, h);
+                items.forEach(v => {
+                    v.angle += v.speed;
+                    let x = w/2 + Math.cos(v.angle)*v.r; let y = h/2 + Math.sin(v.angle)*v.r;
+                    ctx.beginPath(); ctx.arc(x, y, v.size, 0, Math.PI*2);
+                    ctx.fillStyle = `hsla(${v.r}, 80%, 60%, 0.8)`; ctx.fill();
+                });
+            }
+            else if (currentMode === 'plasma') {
+                plasmaTime += 0.02;
+                let pw = w / 4;
+                let ph = h / 4;
+                let imgData = ctx.createImageData(pw, ph);
+                let data = imgData.data;
+
+                for (let x = 0; x < pw; x++) {
+                    for (let y = 0; y < ph; y++) {
+                        let val = Math.sin(x * 0.05 + plasmaTime) + Math.sin(y * 0.05 + plasmaTime) + Math.sin((x + y) * 0.05 + plasmaTime);
+                        val = (val + 3) / 6 * 255;
+
+                        let idx = (x + y * pw) * 4;
+                        data[idx] = val * 0.3;     // R
+                        data[idx + 1] = val * 0.1; // G
+                        data[idx + 2] = val * 0.8; // B
+                        data[idx + 3] = 255;       // A
+                    }
+                }
+                ctx.putImageData(imgData, 0, 0);
+            }
+
+            if (currentMode !== 'gradient') {
+                animationFrameId = requestAnimationFrame(draw);
+            }
+        }
+
+        function changeBg(mode, btn) {
+            currentMode = mode;
+            cancelAnimationFrame(animationFrameId);
+
+            document.querySelectorAll('button.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (mode === 'gradient') {
+                canvas.style.display = 'none';
+                gradientBg.style.display = 'block';
+            } else {
+                canvas.style.display = 'block';
+                gradientBg.style.display = 'none';
+                
+                // Для плазмы восстанавливаем низкое разрешение, для остальных — полное
+                if (mode === 'plasma') {
+                    canvas.width = w / 4;
+                    canvas.height = h / 4;
+                } else {
+                    canvas.width = w;
+                    canvas.height = h;
+                }
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                initCurrentMode();
+                draw();
+            }
+        }
+    </script>
+</body>
+</html>

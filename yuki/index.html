@@ -33,6 +33,7 @@
     </button>
 
     <img class="fullscreen-image" id="fullscreenImage" src="" alt="">
+    <video class="fullscreen-image" id="fullscreenVideo" autoplay loop muted playsinline style="display: none;"></video>
     <div class="fullscreen-author-container" id="fullscreenAuthorContainer">
       <div class="fullscreen-author" id="fullscreenAuthor"></div>
       <div class="fullscreen-femboy" id="fullscreenFemboy">(Femboy Version)</div>
@@ -60,6 +61,23 @@
     let nsfwEnabled = false;
 
     const nsfwCheckbox = document.getElementById('nsfwCheckbox');
+    const fullscreenOverlay = document.getElementById("fullscreenOverlay");
+    const fullscreenImage = document.getElementById("fullscreenImage");
+    const fullscreenVideo = document.getElementById("fullscreenVideo");
+    const fullscreenAuthor = document.getElementById("fullscreenAuthor");
+    const fullscreenFemboy = document.getElementById("fullscreenFemboy");
+    const closeButton = document.getElementById("closeButton");
+    const nextButton = document.getElementById("nextButton");
+    const prevButton = document.getElementById("prevButton");
+
+    function isVideoUrl(url) {
+      return typeof url === "string" && /\.mp4(\?|#|$)/i.test(url);
+    }
+
+    function getActiveFullscreenMedia() {
+      const item = allImages[currentFullscreenIndex];
+      return item && isVideoUrl(item.url) ? fullscreenVideo : fullscreenImage;
+    }
 
     async function loadGallery() {
       try {
@@ -93,24 +111,26 @@
       nsfwEnabled = state;
       localStorage.setItem('nsfwEnabled', state ? 'true' : 'false');
 
-      document.querySelectorAll('img[data-blur="true"]').forEach(img => {
+      document.querySelectorAll('img[data-blur="true"], video[data-blur="true"]').forEach(media => {
         if (state) {
-          img.classList.remove('nsfw-blurred');
+          media.classList.remove('nsfw-blurred');
         } else {
-          img.classList.add('nsfw-blurred');
+          media.classList.add('nsfw-blurred');
         }
       });
 
       if (fullscreenOverlay.classList.contains('active')) {
         const item = allImages[currentFullscreenIndex];
+        const activeMedia = getActiveFullscreenMedia();
         if (item && item.blur) {
           if (state) {
-            fullscreenImage.classList.remove('nsfw-blurred');
+            activeMedia.classList.remove('nsfw-blurred');
           } else {
-            fullscreenImage.classList.add('nsfw-blurred');
+            activeMedia.classList.add('nsfw-blurred');
           }
         } else {
           fullscreenImage.classList.remove('nsfw-blurred');
+          fullscreenVideo.classList.remove('nsfw-blurred');
         }
       }
     }
@@ -140,19 +160,30 @@
           const wrapper = document.createElement("div");
           wrapper.className = "image-wrapper";
 
-          const img = document.createElement("img");
-          img.src = item.url;
-          img.alt = `Рисунок от ${item.author}`;
-          img.loading = "lazy";
+          const isVideo = isVideoUrl(item.url);
+          const media = document.createElement(isVideo ? "video" : "img");
+          media.src = item.url;
+
+          if (isVideo) {
+            media.autoplay = true;
+            media.loop = true;
+            media.muted = true;
+            media.playsInline = true;
+            media.setAttribute("playsinline", "");
+            media.preload = "metadata";
+          } else {
+            media.alt = `Рисунок от ${item.author}`;
+            media.loading = "lazy";
+          }
 
           if (item.blur) {
-            img.dataset.blur = "true";
+            media.dataset.blur = "true";
             if (!nsfwEnabled) {
-              img.classList.add('nsfw-blurred');
+              media.classList.add('nsfw-blurred');
             }
           }
 
-          img.addEventListener("click", () => {
+          media.addEventListener("click", () => {
             openFullscreen(absoluteIndex);
           });
 
@@ -160,7 +191,7 @@
           overlay.className = "author-overlay";
           overlay.textContent = `Автор: ${item.author}`;
 
-          wrapper.appendChild(img);
+          wrapper.appendChild(media);
           wrapper.appendChild(overlay);
           div.appendChild(wrapper);
           gallery.appendChild(div);
@@ -181,16 +212,8 @@
       isLoading = false;
     }
 
-    const fullscreenOverlay = document.getElementById("fullscreenOverlay");
-    const fullscreenImage = document.getElementById("fullscreenImage");
-    const fullscreenAuthor = document.getElementById("fullscreenAuthor");
-    const fullscreenFemboy = document.getElementById("fullscreenFemboy");
-    const closeButton = document.getElementById("closeButton");
-    const nextButton = document.getElementById("nextButton");
-    const prevButton = document.getElementById("prevButton");
-
     function resetElementsOpacity() {
-      const elements = [fullscreenImage, fullscreenAuthor, fullscreenFemboy];
+      const elements = [fullscreenImage, fullscreenVideo, fullscreenAuthor, fullscreenFemboy];
       elements.forEach(el => {
         el.style.transition = '';
         el.classList.remove('fade-in');
@@ -198,11 +221,48 @@
       });
     }
 
+    function renderFullscreenMedia(item) {
+      const isVideo = isVideoUrl(item.url);
+      fullscreenImage.classList.remove('nsfw-blurred');
+      fullscreenVideo.classList.remove('nsfw-blurred');
+
+      if (isVideo) {
+        fullscreenImage.style.display = 'none';
+        fullscreenImage.removeAttribute('src');
+        fullscreenVideo.style.display = 'block';
+        fullscreenVideo.src = item.url;
+        fullscreenVideo.muted = true;
+        fullscreenVideo.loop = true;
+        fullscreenVideo.playsInline = true;
+        fullscreenVideo.play().catch(() => {});
+
+        if (item.blur && !nsfwEnabled) {
+          fullscreenVideo.classList.add('nsfw-blurred');
+        }
+        return fullscreenVideo;
+      } else {
+        fullscreenVideo.pause();
+        fullscreenVideo.style.display = 'none';
+        fullscreenVideo.removeAttribute('src');
+        fullscreenImage.style.display = 'block';
+        fullscreenImage.src = item.url;
+
+        if (item.blur && !nsfwEnabled) {
+          fullscreenImage.classList.add('nsfw-blurred');
+        }
+        return fullscreenImage;
+      }
+    }
+
     function openFullscreen(index, isSwitching = false) {
       currentFullscreenIndex = index;
       const item = allImages[index];
 
-      const animatedElements = [fullscreenImage, fullscreenAuthor, fullscreenFemboy];
+      const activeMedia = renderFullscreenMedia(item);
+      const animatedElements = [activeMedia, fullscreenAuthor, fullscreenFemboy];
+
+      fullscreenAuthor.textContent = `Автор: ${item.author}`;
+      fullscreenFemboy.style.display = item.femboy ? 'block' : 'none';
 
       if (isSwitching) {
         animatedElements.forEach(el => {
@@ -210,25 +270,6 @@
           el.style.opacity = '0';
           el.classList.remove('fade-in');
         });
-        
-        fullscreenImage.src = item.url;
-        fullscreenAuthor.textContent = `Автор: ${item.author}`;
-        
-        if (item.femboy) {
-          fullscreenFemboy.style.display = 'block';
-        } else {
-          fullscreenFemboy.style.display = 'none';
-        }
-
-        if (item.blur) {
-          if (!nsfwEnabled) {
-            fullscreenImage.classList.add('nsfw-blurred');
-          } else {
-            fullscreenImage.classList.remove('nsfw-blurred');
-          }
-        } else {
-          fullscreenImage.classList.remove('nsfw-blurred');
-        }
 
         requestAnimationFrame(() => {
           animatedElements.forEach(el => {
@@ -236,29 +277,8 @@
             el.classList.add('fade-in');
           });
         });
-      } 
-      else {
+      } else {
         resetElementsOpacity();
-        
-        fullscreenImage.src = item.url;
-        fullscreenAuthor.textContent = `Автор: ${item.author}`;
-        
-        if (item.femboy) {
-          fullscreenFemboy.style.display = 'block';
-        } else {
-          fullscreenFemboy.style.display = 'none';
-        }
-
-        if (item.blur) {
-          if (!nsfwEnabled) {
-            fullscreenImage.classList.add('nsfw-blurred');
-          } else {
-            fullscreenImage.classList.remove('nsfw-blurred');
-          }
-        } else {
-          fullscreenImage.classList.remove('nsfw-blurred');
-        }
-
         fullscreenOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
         
@@ -271,16 +291,18 @@
     }
 
     function closeFullscreen() {
-      const animatedElements = [fullscreenImage, fullscreenAuthor, fullscreenFemboy];
+      const activeMedia = getActiveFullscreenMedia();
+      const animatedElements = [activeMedia, fullscreenAuthor, fullscreenFemboy];
       animatedElements.forEach(el => {
         el.classList.remove('fade-in');
       });
       
       fullscreenOverlay.classList.add('closing');
       setTimeout(() => {
+        fullscreenVideo.pause();
         fullscreenOverlay.classList.remove('active', 'closing');
         document.body.style.overflow = 'auto';
-        animatedElements.forEach(el => {
+        [fullscreenImage, fullscreenVideo, fullscreenAuthor, fullscreenFemboy].forEach(el => {
           el.style.opacity = '';
         });
       }, 400);

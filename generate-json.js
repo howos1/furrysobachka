@@ -3,7 +3,7 @@ const path = require('path');
 
 const imgDir = path.join(__dirname, 'img', 'yukimeow');
 const outputFile = path.join(__dirname, 'dist', 'yukimeow.json');
-const baseUrl = 'https://meow.furrysobachka.ru/img/yukimeow/';
+const baseUrl = '/';
 
 let existingData = [];
 if (fs.existsSync(outputFile)) {
